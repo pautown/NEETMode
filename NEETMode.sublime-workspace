@@ -1,0 +1,573 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"array",
+				"new_activity_step_array\tArray<String>"
+			],
+			[
+				"inp",
+				"input_text_label\tflixel.text.FlxText"
+			],
+			[
+				"ip",
+				"input_text_label\tflixel.text.FlxText"
+			],
+			[
+				"add",
+				"add_create_new_activity_screen(  )\tVoid"
+			],
+			[
+				"input",
+				"input_text_label"
+			],
+			[
+				"get",
+				"get_random_string"
+			],
+			[
+				"m",
+				"max_letters"
+			],
+			[
+				"min",
+				"min_letters"
+			],
+			[
+				"random",
+				"random_word"
+			],
+			[
+				"ra",
+				"random"
+			],
+			[
+				"mode",
+				"mode_selector_text\tflixel.text.FlxText"
+			],
+			[
+				"score",
+				"score_text\tvar"
+			],
+			[
+				"tile_tex",
+				"title_text\tflixel.text.FlxText"
+			],
+			[
+				"game",
+				"game_over_canvas\tflixel.FlxSprite"
+			],
+			[
+				"destroy",
+				"destroy_play_screen(  )\tVoid"
+			],
+			[
+				"text",
+				"textField\tflash.text.TextField"
+			],
+			[
+				"Tween",
+				"FlxTween\tflixel.tweens"
+			],
+			[
+				"tween",
+				"FlxTween\tclass"
+			],
+			[
+				"tile",
+				"tile_magnitude\tInt"
+			],
+			[
+				"In",
+				"int( x : Float )\tInt"
+			],
+			[
+				"Flx",
+				"FlxG\tclass"
+			],
+			[
+				"re",
+				"remove(...)\tflixel.text.FlxText"
+			],
+			[
+				"inpu",
+				"input_any\tBool"
+			],
+			[
+				"create",
+				"create_main_menu(  )\tVoid"
+			],
+			[
+				"destr",
+				"destroy_play_screen(  )\tVoid"
+			],
+			[
+				"row",
+				"row_array"
+			],
+			[
+				"for",
+				"for\tfor"
+			],
+			[
+				"game_over",
+				"game_over\tBool"
+			],
+			[
+				"can",
+				"can_move\tBool"
+			],
+			[
+				"gam",
+				"game_over_text\tflixel.text.FlxText"
+			],
+			[
+				"center",
+				"screenCenter(...)\tflixel.FlxObject"
+			],
+			[
+				"game_",
+				"game_state\tString"
+			],
+			[
+				"st",
+				"Std\tclass"
+			],
+			[
+				"mo",
+				"mode_selector_instructions_text"
+			],
+			[
+				"a",
+				"add_score_text\tflixel.text.FlxText"
+			],
+			[
+				"GR",
+				"GREEN\tflixel.util.FlxColor"
+			],
+			[
+				"new",
+				"new_tile_indicator"
+			],
+			[
+				"mag",
+				"tile_magnitude\tInt"
+			],
+			[
+				"c",
+				"color\tflixel.util.FlxColor"
+			],
+			[
+				"high_",
+				"high_score_text\tflixel.text.FlxText"
+			],
+			[
+				"updat",
+				"update_score_display(  )\tVoid"
+			],
+			[
+				"swipe",
+				"swipe_angle\tFloat"
+			],
+			[
+				"swip",
+				"swipe_left\tBool"
+			],
+			[
+				"in",
+				"Int"
+			],
+			[
+				"int",
+				"Int\tclass"
+			],
+			[
+				"FlxColo",
+				"FlxColorArray\tvar"
+			],
+			[
+				"R",
+				"R\tBool"
+			],
+			[
+				"grid",
+				"grid_magnitude"
+			],
+			[
+				"arra",
+				"tile_array\tArray<Array<Dynamic>>"
+			],
+			[
+				"rotat",
+				"rotate_board_counterclockwise(  )\tVoid"
+			],
+			[
+				"rota",
+				"rotate_board_counterclockwise(  )\tVoid"
+			],
+			[
+				"poss",
+				"possible_blank_tiles_temp\tArray<Dynamic>"
+			],
+			[
+				"pos",
+				"possible_blank_tiles_temp\tArray<Dynamic>"
+			],
+			[
+				"row_array",
+				"row_array_copy\tArray<Dynamic>"
+			],
+			[
+				"magni",
+				"grid_magnitude\tInt"
+			],
+			[
+				"tile_",
+				"tile_position_array\tArray<Array<Int>>"
+			],
+			[
+				"p",
+				"push( x : Unknown<0> )\tInt"
+			],
+			[
+				"til",
+				"tile_i\tInt"
+			],
+			[
+				"gri",
+				"grid_magnitude"
+			],
+			[
+				"Til",
+				"Tile_Position\tUnknown<0>"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "source/PlayState.hx",
+			"settings":
+			{
+				"buffer_size": 3527,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/PlayState.hx",
+			"settings":
+			{
+				"buffer_size": 20359,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/town/Scripts_Python/NEETMode/NEETMode.py",
+			"settings":
+			{
+				"buffer_size": 18283,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "import ast"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"packa",
+				"Package Control: Add Channel"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 150.0,
+		"history":
+		[
+			"cd ~/.config/sublime-text-3/Packages",
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+	],
+	"file_history":
+	[
+		"/home/town/Flixel Projects/NEETMode/Project.xml",
+		"/home/town/Scripts_Python/valid.txt",
+		"/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/Main.hx",
+		"/home/town/Flixel Projects/HelloWorld3/source/Main.hx",
+		"/home/town/Flixel Projects/HelloWorld3/source/PlayState.hx",
+		"/home/town/Flixel Projects/HelloWorld/source/PlayState.hx",
+		"/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/Tile.hx",
+		"/home/town/Flixel Projects/HelloWorld/source/Main.hx"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"mode_array",
+			"menu"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "source/PlayState.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3527,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2869,
+								3215
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/Haxe/Haxe.tmLanguage"
+						},
+						"translation.x": 264.0,
+						"translation.y": 821.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"file": "/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/PlayState.hx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 20359,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2331,
+								2331
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/Haxe/Haxe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 398.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/town/Scripts_Python/NEETMode/NEETMode.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18283,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5042,
+								5042
+							]
+						],
+						"settings":
+						{
+							"auto_name": "import ast",
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1908.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "NEETMode.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pro",
+				"NEETMode/Project.xml"
+			],
+			[
+				"proj",
+				"Project.xml"
+			],
+			[
+				"play",
+				"source/PlayState.hx"
+			],
+			[
+				"main",
+				"source/Main.hx"
+			],
+			[
+				"Play",
+				"HelloWorld2/source/PlayState.hx"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 143.0,
+	"status_bar_visible": false,
+	"template_settings":
+	{
+	}
+}

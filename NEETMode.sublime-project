@@ -1,0 +1,25 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"name": "NEETMode",
+			"path": "/home/town/Flixel Projects/NEETMode"
+		},
+		{
+			"follow_symlinks": true,
+			"name": "Flixel",
+			"path": "/home/town/haxelib/flixel/4,6,1/"
+		},
+		{
+			"follow_symlinks": true,
+			"name": "Flixel Addons",
+			"path": "/home/town/haxelib/flixel-addons/2,7,5/"
+		},
+		{
+			"follow_symlinks": true,
+			"name": "Haxe",
+			"path": "/usr/lib/haxe/std"
+		}
+	]
+}
