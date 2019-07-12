@@ -21,8 +21,11 @@ class PlayState extends FlxState
 	public var input_text_label = new flixel.text.FlxText(0,0, 0, "Title of task", 20);
 	public var new_activity_label = new flixel.text.FlxText(0,0, 0, "Title of task", 20);
 	public var new_activity_step_array:Array<String> = ["Enter Activity Name: ", "Enter Activity Description:", "Enter Activity Type, (t)ime or (r)ange: ", "Enter Activity Unit of Measure, eg 'minutes' or 'pages': ", "Enter Activity Min Amount: ", "Enter Activity Max Amount: ", "Enter Average Frequency Per Week (1-7) Activity Occurs: "];
-	public var program_state:String = "new_activity";
+	public var program_state:String = "view_activities";
 	public var new_activity_selector:Int = 0;
+	public var view_activity_selector:Int = 0;
+
+	var view_activity_selector_highlight_rectangle = new FlxSprite();
 	var touch_start_flx_object:flixel.FlxObject = new flixel.FlxObject(0,0,0,0);
 	var touch_start_flx_sprite:FlxSprite = new FlxSprite(0,0);
 	var activity_save:FlxSave = new FlxSave();
@@ -31,6 +34,9 @@ class PlayState extends FlxState
 	var new_activity_create_button:FlxButton;
 	var total_activities_array:Array<Array<String>>;
 	var new_activity_array:Array<String>;
+	var view_activities_up_button:FlxButton;
+	var view_activities_down_button:FlxButton;
+	var activity_texts = new FlxTypedGroup<flixel.text.FlxText>(0);
 
 	override public function create():Void
 	{
@@ -45,8 +51,8 @@ class PlayState extends FlxState
 		new_activity_next_button = new FlxButton(50, 50, "Next", click_new_activity_next_btn);
 		new_activity_previous_button = new FlxButton(50, 50, "Previous", click_new_activity_previous_btn);
 		new_activity_create_button = new FlxButton(50, 50, "Create", click_new_activity_create_btn);
-		add_create_new_activity_screen();
-
+		//add_create_new_activity_screen();
+		add_view_activities_screen();
 	}
 
 	override public function update(elapsed:Float):Void
@@ -88,12 +94,18 @@ class PlayState extends FlxState
 			//if(input_left) new_activity_selector --;
 			if(FlxG.keys.justPressed.ENTER) click_new_activity_next_btn();
 			if(input_any) input_text_label.text = new_activity_step_array[new_activity_selector] + " ("+ Std.string(new_activity_selector + 1) + "/" + Std.string(new_activity_step_array.length) + ")";
-			/*if(new_activity_step_array[new_activity_selector] == "Tiny") grid_magnitude = 3;
-			else if(new_activity_step_array[new_activity_selector] == "2x2") grid_magnitude = 2;
-			else if(new_activity_step_array[new_activity_selector] == "1x1") grid_magnitude = 1;
-			else if(new_activity_step_array[new_activity_selector] == "Large") grid_magnitude = 5;
-			else grid_magnitude = 4;*/
 		
+		}
+		if(program_state == "view_activities"){
+			var updated_selector:Bool = true;
+			if(input_up) view_activity_selector --;
+			else if(input_down) view_activity_selector ++;
+			else updated_selector = false;
+			if (updated_selector) {
+				if(view_activity_selector > total_activities_array.length - 1) view_activity_selector = 0;	
+				else if(view_activity_selector < 0) view_activity_selector = total_activities_array.length - 1;
+				update_view_activity_selector_highlight_rectangle();
+			}
 		}
 	}
 	public function click_new_activity_next_btn():Void
@@ -121,6 +133,10 @@ class PlayState extends FlxState
 		new_activity_array = ["???","???","???","???","???","???","???"];
 		update_new_activity_label();
 	}
+	public function update_view_activity_selector_highlight_rectangle():Void
+	{
+		view_activity_selector_highlight_rectangle.y = activity_texts.members[view_activity_selector].y;// - (activity_texts.members[view_activity_selector].height - update_view_activity_selector_highlight_rectangle.height)/2;
+	}
 	public function update_new_activity_label():Void
 	{
 		new_activity_label.text = "Activity Name: " + new_activity_array[0] + "\n"
@@ -131,6 +147,22 @@ class PlayState extends FlxState
 								+ "Activity Max: " + new_activity_array[5] + "\n"
 								+ "Activity Frequency: " + new_activity_array[6]
 								+ "Total Activities: " + Std.string(total_activities_array.length);
+	}
+	public function add_view_activities_screen():Void
+	{
+		add(view_activity_selector_highlight_rectangle);
+		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width, 20, FlxColor.BLUE, true);
+		var i = 1;
+		for (activity in total_activities_array)
+		{
+				var text = new flixel.text.FlxText(10, 15*i, 0, Std.string(activity), 10);
+				add(text);
+				text.x += text.width/4;
+				text.y += text.height/4;
+				activity_texts.add(text);
+				i ++;
+		}
+		update_view_activity_selector_highlight_rectangle();
 	}
 	public function add_create_new_activity_screen():Void
 	{
@@ -147,5 +179,14 @@ class PlayState extends FlxState
 		new_activity_next_button.x = input_text.x + input_text.width - new_activity_next_button.width - 10;
 		new_activity_previous_button.x = input_text.x + 10;
 		new_activity_create_button.y = FlxG.height - new_activity_create_button.height - 10;
+	}
+	public function remove_create_new_activity_screen():Void
+	{
+		remove(input_text_label);
+		remove(input_text);
+		remove(new_activity_next_button);
+		remove(new_activity_previous_button);
+		remove(new_activity_create_button);
+		remove(new_activity_label);
 	}
 }
