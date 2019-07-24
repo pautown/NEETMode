@@ -142,7 +142,9 @@ class PlayState extends FlxState
 		generated_activities_array = [];
 		for (activity in total_activities_array)
 		{
-			if(FlxG.random.int(1, 7) <= Std.parseInt(activity[6])) generated_activities_array.push(activity.copy());
+			if(FlxG.random.int(1, 7) <= Std.parseInt(activity[6])){
+				generated_activities_array.push([activity.copy()[0],activity.copy()[1],activity.copy()[2],activity.copy()[3], "0", Std.string(FlxG.random.int(Std.parseInt(activity[4]), Std.parseInt(activity[5])))]);	
+			} 
 		}
 	}
 	public function click_menu_view_activities_btn():Void
@@ -276,7 +278,9 @@ class PlayState extends FlxState
 		var i = 1;
 		for (activity in generated_activities_array)
 		{
-				var text = new flixel.text.FlxText(10, menu_button_y + menu_view_activities_button.height + 15 * i, 0, Std.string(activity), 10);
+//			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
+		 		var activity_label =  Std.string(i) + " " + activity[0] + " - " + activity[1] + " - " + activity[4] + "/" + activity[5] + " " + activity[3];  
+				var text = new flixel.text.FlxText(10, menu_button_y + menu_view_activities_button.height + 15 * i, 0, Std.string(activity_label), 10);
 				add(text);
 				text.x += 100;
 				text.y += text.height/4;
