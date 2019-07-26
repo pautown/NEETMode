@@ -49,7 +49,10 @@ class PlayState extends FlxState
 	var view_activities_down_button:FlxButton;
 	var view_activities_edit_button:FlxButton;
 	var activity_texts = new FlxTypedGroup<flixel.text.FlxText>(0);
+	var activity_progress_bars = new FlxTypedGroup<flixel.FlxSprite>(0);
 	var activity_index_to_edit:Int;
+	var progress_bar_width:Int = 50;
+	var progress_bar_height:Int = 10;
 
 	var menu_button_y = 10;
 	var menu_button_x_spacer = 10;
@@ -143,7 +146,7 @@ class PlayState extends FlxState
 		for (activity in total_activities_array)
 		{
 			if(FlxG.random.int(1, 7) <= Std.parseInt(activity[6])){
-				generated_activities_array.push([activity.copy()[0],activity.copy()[1],activity.copy()[2],activity.copy()[3], "0", Std.string(FlxG.random.int(Std.parseInt(activity[4]), Std.parseInt(activity[5])))]);	
+				generated_activities_array.push([activity.copy()[0],activity.copy()[1],activity.copy()[2],activity.copy()[3], "1", Std.string(FlxG.random.int(Std.parseInt(activity[4]), Std.parseInt(activity[5])))]);	
 			} 
 		}
 	}
@@ -273,8 +276,18 @@ class PlayState extends FlxState
 	}
 	public function add_view_generated_activities_screen():Void
 	{
+		for (text in activity_texts)
+		{
+			remove(text);
+			activity_texts.remove(text);
+		}
+		for (progress_bar in activity_progress_bars)
+		{
+			remove(progress_bar);
+			activity_progress_bars.remove(progress_bar);
+		}
 		add(view_activity_selector_highlight_rectangle);
-		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width, 20, FlxColor.BLUE, true);
+		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width, 18, FlxColor.BLUE, true);
 		var i = 1;
 		for (activity in generated_activities_array)
 		{
@@ -286,6 +299,23 @@ class PlayState extends FlxState
 				text.y += text.height/4;
 				activity_texts.add(text);
 				i ++;
+				trace( Std.string(Std.parseInt(activity[4])) + "/" +  Std.string(Std.parseInt(activity[5])));
+				var progress_bar_back = new FlxSprite();
+				progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
+				add(progress_bar_back);
+				progress_bar_back.x = text.x - progress_bar_back.width - menu_button_x_spacer;
+				progress_bar_back.y = text.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
+
+				var progress_bar_front = new FlxSprite();
+				progress_bar_front.makeGraphic(1 + Std.int(progress_bar_width*(Std.parseInt(activity[4])/Std.parseInt(activity[5]))), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
+				add(progress_bar_front);
+				progress_bar_front.x = progress_bar_back.x;
+				progress_bar_front.y = progress_bar_back.y;
+				
+
+				activity_progress_bars.add(progress_bar_back);
+				activity_progress_bars.add(progress_bar_front);
+
 		}
 		//add(view_activities_edit_button);
 		//view_activities_edit_button.y = view_activity_selector_highlight_rectangle.y;
@@ -309,6 +339,11 @@ class PlayState extends FlxState
 		{
 			remove(text);
 			activity_texts.remove(text);
+		}
+		for (progress_bar in activity_progress_bars)
+		{
+			remove(progress_bar);
+			activity_progress_bars.remove(progress_bar);
 		}
 	}
 	public function add_edit_activity_screen():Void
