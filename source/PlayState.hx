@@ -17,10 +17,22 @@ using flixel.util.FlxSpriteUtil;
 class PlayState extends FlxState
 {
 
-	public var input_text:FlxInputText = new FlxInputText(10,10,Std.int(FlxG.width/1.3),"hehehe", 20);
-	public var input_text_label = new flixel.text.FlxText(0,0, 0, "Title of task", 20);
-	public var new_activity_label = new flixel.text.FlxText(0,0, 0, "Title of task", 20);
-	public var edit_activity_label = new flixel.text.FlxText(0,0, 0, "Title of task", 20);
+	public var name_text:FlxInputText = new FlxInputText(10,10,Std.int(FlxG.width/1.3),"name", 20);
+	public var description_text:FlxInputText = new FlxInputText(10,10,Std.int(FlxG.width/1.3),"description", 20);
+	public var type_text:FlxInputText = new FlxInputText(10,10,Std.int(FlxG.width/1.3),"type", 20);
+	public var measurement_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 20);
+	public var min_text:FlxInputText = new FlxInputText(10,10,40,"min", 20);
+	public var max_text:FlxInputText = new FlxInputText(10,10,40,"max", 20);
+	public var frequency_text:FlxInputText = new FlxInputText(10,10, 40,"frequency", 20);
+	public var name_label = new flixel.text.FlxText(0,0, 0, "name:", 20);
+	public var description_label = new flixel.text.FlxText(0,0, 0, "description:", 20);
+	public var type_label = new flixel.text.FlxText(0,0, 0, "type:", 20);
+	public var measurement_label = new flixel.text.FlxText(0,0, 0, "measurement:", 20);
+	public var min_label = new flixel.text.FlxText(0,0, 0, "min:", 20);
+	public var max_label = new flixel.text.FlxText(0,0, 0, "max:", 20);
+	public var frequency_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+
+
 	public var new_activity_step_array:Array<String> = ["Enter Activity Name: ", "Enter Activity Description:", "Enter Activity Type, (t)ime or (r)ange: ", "Enter Activity Unit of Measure, eg 'minutes' or 'pages': ", "Enter Activity Min Amount: ", "Enter Activity Max Amount: ", "Enter Average Frequency Per Week (1-7) Activity Occurs: "];
 	public var program_state:String = "new_activity";
 	public var new_activity_selector:Int = 0;
@@ -72,13 +84,9 @@ class PlayState extends FlxState
 		menu_new_activity_button = new FlxButton(50, 50, "New Activity", click_menu_new_activity_btn);
 		menu_generate_activities_button = new FlxButton(50, 50, "Generate Activities", click_menu_generate_activities_btn);
 		menu_view_generated_activities_button = new FlxButton(50, 50, "View Generated", click_menu_view_generated_activities_btn);
-		new_activity_next_button = new FlxButton(50, 50, "Next", click_new_activity_next_btn);
-		new_activity_previous_button = new FlxButton(50, 50, "Previous", click_new_activity_previous_btn);
 		new_activity_create_button = new FlxButton(50, 50, "Create", click_new_activity_create_btn);
 		view_activities_edit_button = new FlxButton(50, 50, "Edit", click_view_activities_edit_btn);
-		edit_activity_next_button = new FlxButton(50, 50, "Next", click_edit_activity_next_btn);
-		edit_activity_previous_button = new FlxButton(50, 50, "Previous", click_edit_activity_previous_btn);
-		edit_activity_edit_button = new FlxButton(50, 50, "Edit", click_edit_activity_edit_btn);
+		edit_activity_edit_button = new FlxButton(50, 50, "Save", click_edit_activity_edit_btn);
 		add_create_new_activity_screen();
 		//add_view_activities_screen();
 		add_menu_buttons();
@@ -101,7 +109,6 @@ class PlayState extends FlxState
 		
 
 		if(program_state == "new_activity"){
-			if(FlxG.keys.justPressed.ENTER) click_new_activity_next_btn();
 		}
 		if(program_state == "view_activities"){
 			var updated_selector:Bool = true;
@@ -162,32 +169,13 @@ class PlayState extends FlxState
 		add_create_new_activity_screen();
 		program_state = "new_activity";
 	}
-	public function click_new_activity_next_btn():Void
-	{
-		trace("next");
-		new_activity_array[new_activity_selector] = input_text.text;
-		new_activity_selector ++;
-		update_new_activity_label();
-		if(new_activity_selector > new_activity_step_array.length - 1) new_activity_selector = 0;	
-		input_text.text = new_activity_array[new_activity_selector];
-		input_text_label.text = new_activity_step_array[new_activity_selector] + " ("+ Std.string(new_activity_selector + 1) + "/" + Std.string(new_activity_step_array.length) + ")";
-	}
-	public function click_new_activity_previous_btn():Void
-	{
-		trace("previous");
-		new_activity_array[new_activity_selector] = input_text.text;
-		new_activity_selector --;
-		update_new_activity_label();
-		if(new_activity_selector < 0) new_activity_selector = new_activity_step_array.length - 1;
-		input_text.text = new_activity_array[new_activity_selector];
-		input_text_label.text = new_activity_step_array[new_activity_selector] + " ("+ Std.string(new_activity_selector + 1) + "/" + Std.string(new_activity_step_array.length) + ")";
-	}
+
 	public function click_new_activity_create_btn():Void
 	{
 		trace("create");
-		total_activities_array.push(new_activity_array.copy());
+		total_activities_array.push([name_text.text,description_text.text,type_text.text,
+			measurement_text.text,min_text.text,max_text.text,frequency_text.text]);
 		new_activity_array = ["???","???","???","???","???","???","???"];
-		update_new_activity_label();
 		activity_save.data.total_activities_array = total_activities_array; 
 		activity_save.flush();
 	}
@@ -195,22 +183,14 @@ class PlayState extends FlxState
 	public function click_edit_activity_next_btn():Void
 	{
 		trace("next");
-		edit_activity_array[edit_activity_selector] = input_text.text;
 		edit_activity_selector ++;
-		update_edit_activity_label();
 		if(edit_activity_selector > new_activity_step_array.length - 1) edit_activity_selector = 0;	
-		input_text.text = edit_activity_array[edit_activity_selector];
-		input_text_label.text = new_activity_step_array[edit_activity_selector] + " ("+ Std.string(edit_activity_selector + 1) + "/" + Std.string(new_activity_step_array.length) + ")";
 	}
 	public function click_edit_activity_previous_btn():Void
 	{
 		trace("previous");
-		edit_activity_array[new_activity_selector] = input_text.text;
 		edit_activity_selector --;
-		update_edit_activity_label();
 		if(edit_activity_selector < 0) edit_activity_selector = new_activity_step_array.length - 1;
-		input_text.text = edit_activity_array[new_activity_selector];
-		input_text_label.text = new_activity_step_array[edit_activity_selector] + " ("+ Std.string(edit_activity_selector + 1) + "/" + Std.string(new_activity_step_array.length) + ")";
 	}
 	public function click_view_activities_edit_btn():Void
 	{
@@ -223,8 +203,8 @@ class PlayState extends FlxState
 	public function click_edit_activity_edit_btn():Void
 	{
 		trace("edit");
-		total_activities_array[activity_index_to_edit] = edit_activity_array;
-		update_edit_activity_label();
+		total_activities_array[activity_index_to_edit] = [name_text.text,description_text.text,type_text.text,
+			measurement_text.text,min_text.text,max_text.text,frequency_text.text].copy();
 		activity_save.data.total_activities_array = total_activities_array; 
 		activity_save.flush();
 	}
@@ -233,28 +213,7 @@ class PlayState extends FlxState
 		view_activity_selector_highlight_rectangle.y = activity_texts.members[view_activity_selector].y;// - (activity_texts.members[view_activity_selector].height - update_view_activity_selector_highlight_rectangle.height)/2;
 		if(program_state == "view_activities") view_activities_edit_button.y = view_activity_selector_highlight_rectangle.y;
 	}
-	public function update_new_activity_label():Void
-	{
-		new_activity_label.text = "Activity Name: " + new_activity_array[0] + "\n"
-								+ "Activity Description: " + new_activity_array[1] + "\n"
-								+ "Activity Type: " + new_activity_array[2] + "\n"
-								+ "Activity Unit of Measure: " + new_activity_array[3] + "\n"
-								+ "Activity Min: " + new_activity_array[4] + "\n"
-								+ "Activity Max: " + new_activity_array[5] + "\n"
-								+ "Activity Frequency: " + new_activity_array[6]
-								+ "Total Activities: " + Std.string(total_activities_array.length);
-	}
-	public function update_edit_activity_label():Void
-	{
-		edit_activity_label.text = "Activity Name: " + edit_activity_array[0] + "\n"
-								+ "Activity Description: " + edit_activity_array[1] + "\n"
-								+ "Activity Type: " + edit_activity_array[2] + "\n"
-								+ "Activity Unit of Measure: " + edit_activity_array[3] + "\n"
-								+ "Activity Min: " + edit_activity_array[4] + "\n"
-								+ "Activity Max: " + edit_activity_array[5] + "\n"
-								+ "Activity Frequency: " + edit_activity_array[6]
-								+ "Total Activities: " + Std.string(total_activities_array.length);
-	}
+
 	public function add_view_activities_screen():Void
 	{
 		add(view_activity_selector_highlight_rectangle);
@@ -348,36 +307,90 @@ class PlayState extends FlxState
 	}
 	public function add_edit_activity_screen():Void
 	{
-		edit_activity_array = total_activities_array[activity_index_to_edit];
-		add(input_text_label);
-		add(input_text);
-		add(edit_activity_next_button);
-		add(edit_activity_previous_button);
+		edit_activity_array = total_activities_array[activity_index_to_edit].copy();
+		//			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
+		add(name_label);
+		add(name_text);
+		add(description_label);
+		add(description_text);
+		add(type_label);
+		add(type_text);
+		add(measurement_label);
+		add(measurement_text);
+		add(min_label);
+		add(min_text);
+		add(max_label);
+		add(max_text);
+		add(frequency_label);
+		add(frequency_text);
+
+		
 		add(edit_activity_edit_button);
-		add(edit_activity_label);
-		input_text_label.y = menu_button_y + menu_view_activities_button.height + 15;
-		input_text.y = input_text_label.y + input_text_label.height;
-		edit_activity_next_button.y = edit_activity_previous_button.y = input_text.y + input_text.height + 10;
-		edit_activity_label.y = edit_activity_next_button.y + edit_activity_next_button.height + 10;
-		edit_activity_next_button.x = input_text.x + input_text.width - edit_activity_next_button.width - 10;
-		edit_activity_previous_button.x = input_text.x + 10;
+
+		name_text.text = edit_activity_array[0];
+		description_text.text = edit_activity_array[1];
+		type_text.text = edit_activity_array[2];
+		measurement_text.text = edit_activity_array[3];
+		min_text.text = edit_activity_array[4];
+		max_text.text = edit_activity_array[5];
+		frequency_text.text = edit_activity_array[6];
+
+		name_label.y = menu_button_y + menu_view_activities_button.height + 15;
+		name_text.y = name_label.y + name_label.height;
+		description_label.y = name_text.y + name_text.height + 10;
+		description_text.y = description_label.y + description_label.height;
+		type_label.y = description_text.y + description_text.height + 10;
+		type_text.y = type_label.y + type_label.height;
+		measurement_label.y = type_text.y + type_text.height + 10;
+		measurement_text.y = measurement_label.y + measurement_label.height;
+		min_label.y = max_label.y = frequency_label.y = measurement_label.y;
+		min_text.y = max_text.y = frequency_text.y = measurement_text.y;
+
+		name_label.x = name_text.x = 10;
+		description_label.x = description_text.x = type_label.x = type_text.x = measurement_label.x = measurement_text.x = name_label.x;
+		min_label.x = min_text.x = measurement_label.x + measurement_label.width + menu_button_x_spacer;
+		max_label.x = max_text.x = min_label.x + min_label.width + menu_button_x_spacer;
+		frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;
 		edit_activity_edit_button.y = FlxG.height - edit_activity_edit_button.height - 10;
 	}
 	public function add_create_new_activity_screen():Void
 	{
 		new_activity_array = ["???","???","???","???","???","???","???"];
-		add(input_text_label);
-		add(input_text);
-		add(new_activity_next_button);
-		add(new_activity_previous_button);
+		//			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
+		add(name_label);
+		add(name_text);
+		add(description_label);
+		add(description_text);
+		add(type_label);
+		add(type_text);
+		add(measurement_label);
+		add(measurement_text);
+		add(min_label);
+		add(min_text);
+		add(max_label);
+		add(max_text);
+		add(frequency_label);
+		add(frequency_text);
+
+		
 		add(new_activity_create_button);
-		add(new_activity_label);
-		input_text_label.y = menu_button_y + menu_view_activities_button.height + 15;
-		input_text.y = input_text_label.y + input_text_label.height;
-		new_activity_next_button.y = new_activity_previous_button.y = input_text.y + input_text.height + 10;
-		new_activity_label.y = new_activity_next_button.y + new_activity_next_button.height + 10;
-		new_activity_next_button.x = input_text.x + input_text.width - new_activity_next_button.width - 10;
-		new_activity_previous_button.x = input_text.x + 10;
+		name_label.text = description_label.text = type_label.text = measurement_label.text = min_label.text = max_label.text = frequency_label.text = ""
+		name_label.y = menu_button_y + menu_view_activities_button.height + 15;
+		name_text.y = name_label.y + name_label.height;
+		description_label.y = name_text.y + name_text.height + 10;
+		description_text.y = description_label.y + description_label.height;
+		type_label.y = description_text.y + description_text.height + 10;
+		type_text.y = type_label.y + type_label.height;
+		measurement_label.y = type_text.y + type_text.height + 10;
+		measurement_text.y = measurement_label.y + measurement_label.height;
+		min_label.y = max_label.y = frequency_label.y = measurement_label.y;
+		min_text.y = max_text.y = frequency_text.y = measurement_text.y;
+
+		name_label.x = name_text.x = 10;
+		description_label.x = description_text.x = type_label.x = type_text.x = measurement_label.x = measurement_text.x = name_label.x;
+		min_label.x = min_text.x = measurement_label.x + measurement_label.width + menu_button_x_spacer;
+		max_label.x = max_text.x = min_label.x + min_label.width + menu_button_x_spacer;
+		frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;
 		new_activity_create_button.y = FlxG.height - new_activity_create_button.height - 10;
 	}
 
@@ -396,21 +409,40 @@ class PlayState extends FlxState
 	
 	public function remove_edit_activity_screen():Void
 	{
-		remove(input_text_label);
-		remove(input_text);
-		remove(edit_activity_next_button);
-		remove(edit_activity_previous_button);
+		remove(name_label);
+		remove(name_text);
+		remove(description_label);
+		remove(description_text);
+		remove(type_label);
+		remove(type_text);
+		remove(measurement_label);
+		remove(measurement_text);
+		remove(min_label);
+		remove(min_text);
+		remove(max_label);
+		remove(max_text);
+		remove(frequency_label);
+		remove(frequency_text);
 		remove(edit_activity_edit_button);
-		remove(edit_activity_label);
 	}
 	public function remove_create_new_activity_screen():Void
 	{
-		remove(input_text_label);
-		remove(input_text);
-		remove(new_activity_next_button);
-		remove(new_activity_previous_button);
+		remove(name_label);
+		remove(name_text);
+		remove(description_label);
+		remove(description_text);
+		remove(type_label);
+		remove(type_text);
+		remove(measurement_label);
+		remove(measurement_text);
+		remove(min_label);
+		remove(min_text);
+		remove(max_label);
+		remove(max_text);
+		remove(frequency_label);
+		remove(frequency_text);
 		remove(new_activity_create_button);
-		remove(new_activity_label);
+
 	}
 
 	public function remove_current_screen():Void {
