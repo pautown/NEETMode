@@ -12,6 +12,8 @@
 -D hscript=2.3.0
 -cp /home/town/haxelib/flixel-ui/2,3,2
 -D flixel-ui=2.3.2
+-cp /home/town/haxelib/flixel-addons/2,7,5
+-D flixel-addons=2.7.5
 -cp source
 -D ANDROID_SETUP=true
 -D ANDROID_NDK_ROOT=/home/town/tools/
