@@ -12,6 +12,8 @@
 -D hscript=2.3.0
 -cp /home/town/haxelib/flixel-ui/2,3,2
 -D flixel-ui=2.3.2
+-cp /home/town/haxelib/flixel-addons/2,7,5
+-D flixel-addons=2.7.5
 -cp source
 -D lime-openal
 -D ANDROID_SETUP=true
@@ -23,6 +25,7 @@
 -D tools=7.3.0
 -D ANDROID_SDK=/home/town/tools/
 -D lime-cairo
+-D NAPE_NO_INLINE
 -D FLX_NO_DEBUG
 -D lime-opengl
 -D no-compilation
