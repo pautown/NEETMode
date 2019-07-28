@@ -32,6 +32,10 @@ class PlayState extends FlxState
 	public var max_label = new flixel.text.FlxText(0,0, 0, "max:", 20);
 	public var frequency_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
 
+	public var view_selected_generated_activity_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+	public var view_selected_generated_activity_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 20);
+	public var view_selected_generated_activity_button:FlxButton;
+
 
 	public var new_activity_step_array:Array<String> = ["Enter Activity Name: ", "Enter Activity Description:", "Enter Activity Type, (t)ime or (r)ange: ", "Enter Activity Unit of Measure, eg 'minutes' or 'pages': ", "Enter Activity Min Amount: ", "Enter Activity Max Amount: ", "Enter Average Frequency Per Week (1-7) Activity Occurs: "];
 	public var program_state:String = "new_activity";
@@ -78,6 +82,8 @@ class PlayState extends FlxState
 			activity_save.flush();
 		}
 		total_activities_array = activity_save.data.total_activities_array;
+		
+		view_selected_generated_activity_button = new FlxButton(50, 50, "Update", click_view_selected_generated_activity_button);
 		menu_view_activities_button = new FlxButton(50, 50, "View Activities", click_menu_view_activities_btn);
 		menu_new_activity_button = new FlxButton(50, 50, "New Activity", click_menu_new_activity_btn);
 		menu_generate_activities_button = new FlxButton(50, 50, "Generate Activities", click_menu_generate_activities_btn);
@@ -205,6 +211,13 @@ class PlayState extends FlxState
 	{
 		view_activity_selector_highlight_rectangle.y = activity_texts.members[view_activity_selector].y;// - (activity_texts.members[view_activity_selector].height - update_view_activity_selector_highlight_rectangle.height)/2;
 		if(program_state == "view_activities") view_activities_edit_button.y = view_activities_delete_button.y = view_activity_selector_highlight_rectangle.y;
+		if(program_state == "view_generated_activities"){
+			var activity = generated_activities_array[view_activity_selector];
+			var activity_label =  activity[0] + " "+ activity[4] + "/" + activity[5] + " " + activity[3];  
+			view_selected_generated_activity_label.text = activity_label;
+			view_selected_generated_activity_text.text = activity[4];
+
+		}
 	}
 
 	public function add_view_activities_screen():Void
@@ -223,7 +236,11 @@ class PlayState extends FlxState
 		}
 		add(view_activities_edit_button);
 		add(view_activities_delete_button);
-
+		view_selected_generated_activity_button.y = FlxG.height - view_selected_generated_activity_button.height - menu_button_y;
+		view_selected_generated_activity_text.y = view_selected_generated_activity_button.y;
+		view_selected_generated_activity_label.y = view_selected_generated_activity_button.y - view_selected_generated_activity_label.height - 15;
+		view_selected_generated_activity_text.x = view_selected_generated_activity_label.x = menu_button_x_spacer;
+		view_selected_generated_activity_button.x = view_selected_generated_activity_text.x + view_selected_generated_activity_text.width + menu_button_x_spacer;
 		update_view_activity_selector_highlight_rectangle();
 		view_activities_edit_button.y = view_activity_selector_highlight_rectangle.y;
 		view_activities_edit_button.x = menu_button_x_spacer;
@@ -243,12 +260,16 @@ class PlayState extends FlxState
 			activity_progress_bars.remove(progress_bar);
 		}
 		add(view_activity_selector_highlight_rectangle);
+		add(view_selected_generated_activity_label);
+		add(view_selected_generated_activity_text);
+		add(view_selected_generated_activity_button);
 		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width, 18, FlxColor.BLUE, true);
 		var i = 1;
 		for (activity in generated_activities_array)
 		{
 //			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
-		 		var activity_label =  Std.string(i) + " " + activity[0] + " - " + activity[1] + " - " + activity[4] + "/" + activity[5] + " " + activity[3];  
+				var activity_percentage = Std.string(Std.int(100*(Std.parseFloat(activity[4])/Std.parseFloat(activity[5]))));
+		 		var activity_label =  activity_percentage + "% " + Std.string(i) + " " + activity[0] + " - " + activity[1] + " - " + activity[4] + "/" + activity[5] + " " + activity[3];  
 				var text = new flixel.text.FlxText(10, menu_button_y + menu_view_activities_button.height + 15 * i, 0, Std.string(activity_label), 10);
 				add(text);
 				text.x += 100;
@@ -292,6 +313,9 @@ class PlayState extends FlxState
 	public function remove_view_generated_activities_screen():Void
 	{
 		remove(view_activity_selector_highlight_rectangle);
+		remove(view_selected_generated_activity_label);
+		remove(view_selected_generated_activity_text);
+		remove(view_selected_generated_activity_button);
 		for (text in activity_texts)
 		{
 			remove(text);
@@ -420,6 +444,15 @@ class PlayState extends FlxState
 		flash_announcement_label("Deleted Activity");
 	}
 
+	public function click_view_selected_generated_activity_button():Void {
+
+		var activity = generated_activities_array[view_activity_selector];
+		activity[4] = view_selected_generated_activity_text.text;
+		remove_view_generated_activities_screen();
+		add_view_generated_activities_screen();
+
+	}
+	
 	public function flash_announcement_label(message:String):Void {
 		remove(announcement_label);
 		announcement_label.alpha = 1;
