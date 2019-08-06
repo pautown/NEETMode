@@ -32,6 +32,10 @@ class PlayState extends FlxState
 	public var max_label = new flixel.text.FlxText(0,0, 0, "max:", 20);
 	public var frequency_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
 
+	public var view_generated_activities_overview_activities_label = new flixel.text.FlxText(0,0, 0, "0", 20);
+	public var view_generated_activities_overview_time_label = new flixel.text.FlxText(0,0, 0, "0", 20);
+	public var view_generated_activities_overview_total_label = new flixel.text.FlxText(0,0, 0, "0", 20);
+
 	public var view_selected_generated_activity_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
 	public var view_selected_generated_activity_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 20);
 	public var view_selected_generated_activity_button:FlxButton;
@@ -236,11 +240,6 @@ class PlayState extends FlxState
 		}
 		add(view_activities_edit_button);
 		add(view_activities_delete_button);
-		view_selected_generated_activity_button.y = FlxG.height - view_selected_generated_activity_button.height - menu_button_y;
-		view_selected_generated_activity_text.y = view_selected_generated_activity_button.y;
-		view_selected_generated_activity_label.y = view_selected_generated_activity_button.y - view_selected_generated_activity_label.height - 15;
-		view_selected_generated_activity_text.x = view_selected_generated_activity_label.x = menu_button_x_spacer;
-		view_selected_generated_activity_button.x = view_selected_generated_activity_text.x + view_selected_generated_activity_text.width + menu_button_x_spacer;
 		update_view_activity_selector_highlight_rectangle();
 		view_activities_edit_button.y = view_activity_selector_highlight_rectangle.y;
 		view_activities_edit_button.x = menu_button_x_spacer;
@@ -263,41 +262,138 @@ class PlayState extends FlxState
 		add(view_selected_generated_activity_label);
 		add(view_selected_generated_activity_text);
 		add(view_selected_generated_activity_button);
+
+		view_selected_generated_activity_button.y = FlxG.height - view_selected_generated_activity_button.height - menu_button_y;
+		view_selected_generated_activity_text.y = view_selected_generated_activity_button.y;
+		view_selected_generated_activity_label.y = view_selected_generated_activity_button.y - view_selected_generated_activity_label.height - 15;
+		view_selected_generated_activity_text.x = view_selected_generated_activity_label.x = menu_button_x_spacer;
+		view_selected_generated_activity_button.x = view_selected_generated_activity_text.x + view_selected_generated_activity_text.width + menu_button_x_spacer;
+		
+		var activities_total = generated_activities_array.length;
+		var activities_completed = 0.00;
+		var activities_percentage = 0.00;
+
+		var activities_time_total = 0.00;
+		var activities_time_max = 0.00;
+		var activities_time_completed = 0.00;
+		var activities_time_percentage = 0.00;
+
+		var activities_range_total = 0.00;
+		var activities_range_completed = 0.00;
+		var activities_range_percentage = 0.00;
+
+
 		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width, 18, FlxColor.BLUE, true);
 		var i = 1;
 		for (activity in generated_activities_array)
 		{
+			if(Std.parseFloat(activity[4])/Std.parseFloat(activity[5]) == 1) activities_completed ++;
+			activities_percentage += Std.parseFloat(activity[4])/Std.parseFloat(activity[5]);
+			
+			if(activity[2] == "t"){
+				//activities_time_max ++;
+				activities_time_total += Std.parseFloat(activity[5]);
+				activities_time_completed +=  Std.parseFloat(activity[4]);
+				activities_time_percentage += Std.parseFloat(activity[4])/Std.parseFloat(activity[5]);
+			}
+			if(activity[2] == "r"){
+				activities_range_total ++;
+				if(Std.parseFloat(activity[4])/Std.parseFloat(activity[5]) == 1) activities_range_completed ++;
+				activities_range_percentage += Std.parseFloat(activity[4])/Std.parseFloat(activity[5]);
+			}
 //			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
-				var activity_percentage = Std.string(Std.int(100*(Std.parseFloat(activity[4])/Std.parseFloat(activity[5]))));
-		 		var activity_label =  activity_percentage + "% " + Std.string(i) + " " + activity[0] + " - " + activity[1] + " - " + activity[4] + "/" + activity[5] + " " + activity[3];  
-				var text = new flixel.text.FlxText(10, menu_button_y + menu_view_activities_button.height + 15 * i, 0, Std.string(activity_label), 10);
-				add(text);
-				text.x += 100;
-				text.y += text.height/4;
-				activity_texts.add(text);
-				i ++;
-				trace( Std.string(Std.parseInt(activity[4])) + "/" +  Std.string(Std.parseInt(activity[5])));
-				var progress_bar_back = new FlxSprite();
-				progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
-				add(progress_bar_back);
-				progress_bar_back.x = text.x - progress_bar_back.width - menu_button_x_spacer;
-				progress_bar_back.y = text.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
+			var activity_percentage = Std.string(Std.int(100*(Std.parseFloat(activity[4])/Std.parseFloat(activity[5]))));
+	 		var activity_label =  activity_percentage + "% " + Std.string(i) + " " + activity[0] + " - " + activity[1] + " - " + activity[4] + "/" + activity[5] + " " + activity[3];  
+			var text = new flixel.text.FlxText(10, menu_button_y + menu_view_activities_button.height + 15 * i, 0, Std.string(activity_label), 10);
+			add(text);
+			text.x += 100;
+			text.y += text.height/4;
+			activity_texts.add(text);
+			i ++;
+			trace( Std.string(Std.parseInt(activity[4])) + "/" +  Std.string(Std.parseInt(activity[5])));
+			var progress_bar_back = new FlxSprite();
+			progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
+			add(progress_bar_back);
+			progress_bar_back.x = text.x - progress_bar_back.width - menu_button_x_spacer;
+			progress_bar_back.y = text.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
 
-				var progress_bar_front = new FlxSprite();
-				progress_bar_front.makeGraphic(1 + Std.int(progress_bar_width*(Std.parseInt(activity[4])/Std.parseInt(activity[5]))), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
-				add(progress_bar_front);
-				progress_bar_front.x = progress_bar_back.x;
-				progress_bar_front.y = progress_bar_back.y;
-				
+			var progress_bar_front = new FlxSprite();
+			progress_bar_front.makeGraphic(1 + Std.int(progress_bar_width*(Std.parseInt(activity[4])/Std.parseInt(activity[5]))), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
+			add(progress_bar_front);
+			progress_bar_front.x = progress_bar_back.x;
+			progress_bar_front.y = progress_bar_back.y;
+			
 
-				activity_progress_bars.add(progress_bar_back);
-				activity_progress_bars.add(progress_bar_front);
+			activity_progress_bars.add(progress_bar_back);
+			activity_progress_bars.add(progress_bar_front);
 
 		}
-		//add(view_activities_edit_button);
-		//view_activities_edit_button.y = view_activity_selector_highlight_rectangle.y;
-		//view_activities_edit_button.x = menu_button_x_spacer;
+		activities_time_percentage = activities_time_completed/activities_time_total;
+		activities_range_percentage = activities_range_completed/activities_range_total;
+		activities_percentage = activities_percentage/activities_total;
+
+
+//---------------
+// A [----------]   0% 0 / 1 Activities
+// M [----------]   0% 0 / 39 Minutes
+//---------------
+// T [----------]   0%
+ 		add(view_generated_activities_overview_activities_label);
+		add(view_generated_activities_overview_time_label);
+		add(view_generated_activities_overview_total_label);
+
+		view_generated_activities_overview_activities_label.x = view_generated_activities_overview_time_label.x = view_generated_activities_overview_total_label.x  = 100;
+
+		view_generated_activities_overview_total_label.y = view_selected_generated_activity_label.y - view_generated_activities_overview_total_label.height - menu_button_y;
+		view_generated_activities_overview_time_label.y = view_generated_activities_overview_total_label.y - view_generated_activities_overview_time_label.height - menu_button_y;
+		view_generated_activities_overview_activities_label.y = view_generated_activities_overview_time_label.y - view_generated_activities_overview_activities_label.height;
+
+		view_generated_activities_overview_activities_label.text = Std.string(Std.int(activities_completed/activities_total*100)) + "% " + Std.string(activities_completed) + "/" + Std.string(activities_total) + " Activities";
+		view_generated_activities_overview_time_label.text = Std.string(Std.int(activities_time_percentage*100)) + "% " + Std.string(Std.int(activities_time_percentage*activities_time_total)) + "/" + Std.string(activities_time_total) + " Minutes";
+		view_generated_activities_overview_total_label.text = Std.string(Std.int(activities_percentage*100)) + "%";
+
 		update_view_activity_selector_highlight_rectangle();
+
+		var progress_bar_back = new FlxSprite();
+		progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
+		add(progress_bar_back);
+		progress_bar_back.x = view_generated_activities_overview_activities_label.x - progress_bar_back.width - menu_button_x_spacer;
+		progress_bar_back.y = view_generated_activities_overview_activities_label.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
+		var progress_bar_front = new FlxSprite();
+		progress_bar_front.makeGraphic(1 + Std.int(activities_completed/activities_total*progress_bar_width), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
+		add(progress_bar_front);
+		progress_bar_front.x = progress_bar_back.x;
+		progress_bar_front.y = progress_bar_back.y;
+		activity_progress_bars.add(progress_bar_back);
+		activity_progress_bars.add(progress_bar_front);
+
+		var progress_bar_back = new FlxSprite();
+		progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
+		add(progress_bar_back);
+		progress_bar_back.x = view_generated_activities_overview_time_label.x - progress_bar_back.width - menu_button_x_spacer;
+		progress_bar_back.y = view_generated_activities_overview_time_label.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
+		var progress_bar_front = new FlxSprite();
+		progress_bar_front.makeGraphic(1 + Std.int(activities_time_percentage*progress_bar_width), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
+		add(progress_bar_front);
+		progress_bar_front.x = progress_bar_back.x;
+		progress_bar_front.y = progress_bar_back.y;
+		activity_progress_bars.add(progress_bar_back);
+		activity_progress_bars.add(progress_bar_front);
+
+		var progress_bar_back = new FlxSprite();
+		progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
+		add(progress_bar_back);
+		progress_bar_back.x = view_generated_activities_overview_total_label.x - progress_bar_back.width - menu_button_x_spacer;
+		progress_bar_back.y = view_generated_activities_overview_total_label.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
+		var progress_bar_front = new FlxSprite();
+		progress_bar_front.makeGraphic(1 + Std.int(activities_percentage*progress_bar_width), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
+		add(progress_bar_front);
+		progress_bar_front.x = progress_bar_back.x;
+		progress_bar_front.y = progress_bar_back.y;
+		activity_progress_bars.add(progress_bar_back);
+		activity_progress_bars.add(progress_bar_front);
+
+		
 	}
 	public function remove_view_activities_screen():Void
 	{
@@ -312,6 +408,9 @@ class PlayState extends FlxState
 	}
 	public function remove_view_generated_activities_screen():Void
 	{
+		remove(view_generated_activities_overview_activities_label);
+		remove(view_generated_activities_overview_time_label);
+		remove(view_generated_activities_overview_total_label);
 		remove(view_activity_selector_highlight_rectangle);
 		remove(view_selected_generated_activity_label);
 		remove(view_selected_generated_activity_text);
