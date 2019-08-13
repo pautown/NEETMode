@@ -53,6 +53,14 @@ class PlayState extends FlxState
 	var activity_save:FlxSave = new FlxSave();
 	var new_activity_create_button:FlxButton;
 	var edit_activity_edit_button:FlxButton;
+
+	var activities_total_complete:Int;
+	var activities_total_incomplete:Int;
+	var activities_current_streak:Int;
+	var activities_record_streak:Int;
+	var activities_perfect_days:Int;
+	var activities_imperfect_days:Int;
+
 	var total_activities_array:Array<Array<String>>;
 	var generated_activities_array:Array<Array<String>> = [];
 	var new_activity_array:Array<String>;
@@ -74,6 +82,12 @@ class PlayState extends FlxState
 
 	var menu_button_y = 10;
 	var menu_button_x_spacer = 10;
+
+	public var total_stats_complete_incomplete_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+	public var total_stats_completion_rate_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+	public var total_stats_streak_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+	public var total_stats_perfect_imperfect_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+
 	override public function create():Void
 	{
 		super.create();
@@ -81,10 +95,17 @@ class PlayState extends FlxState
 		FlxG.mouse.useSystemCursor = true;
 		activity_save.bind("NEETMode");
 		total_activities_array = [];
-		if (activity_save.data.total_activities_array == null){
-			activity_save.data.total_activities_array = []; 
-			activity_save.flush();
-		}
+		if (activity_save.data.total_activities_array == null) activity_save.data.total_activities_array = []; 
+		if (activity_save.data.activities_total_complete == null) activity_save.data.activities_total_complete = 0;
+		if (activity_save.data.activities_total_incomplete == null) activity_save.data.activities_total_incomplete = 0;
+		if (activity_save.data.activities_current_streak == null) activity_save.data.activities_current_streak = 0;
+		if (activity_save.data.activities_record_streak == null) activity_save.data.activities_record_streak = 0;
+		if (activity_save.data.activities_perfect_days == null) activity_save.data.activities_perfect_days = 0;
+		if (activity_save.data.activities_imperfect_days == null) activity_save.data.activities_imperfect_days = 0;
+		activity_save.flush(); 
+
+		load_persistant_stats();
+
 		total_activities_array = activity_save.data.total_activities_array;
 		
 		view_selected_generated_activity_button = new FlxButton(50, 50, "Update", click_view_selected_generated_activity_button);
@@ -332,7 +353,7 @@ class PlayState extends FlxState
 		activities_range_percentage = activities_range_completed/activities_range_total;
 		activities_percentage = activities_percentage/activities_total;
 
-
+		add_total_stats_overview(menu_button_x_spacer, view_selected_generated_activity_label.y);
 //---------------
 // A [----------]   0% 0 / 1 Activities
 // M [----------]   0% 0 / 39 Minutes
@@ -344,7 +365,7 @@ class PlayState extends FlxState
 
 		view_generated_activities_overview_activities_label.x = view_generated_activities_overview_time_label.x = view_generated_activities_overview_total_label.x  = 100;
 
-		view_generated_activities_overview_total_label.y = view_selected_generated_activity_label.y - view_generated_activities_overview_total_label.height - menu_button_y;
+		view_generated_activities_overview_total_label.y = total_stats_complete_incomplete_label.y - view_generated_activities_overview_total_label.height - menu_button_y;
 		view_generated_activities_overview_time_label.y = view_generated_activities_overview_total_label.y - view_generated_activities_overview_time_label.height - menu_button_y;
 		view_generated_activities_overview_activities_label.y = view_generated_activities_overview_time_label.y - view_generated_activities_overview_activities_label.height;
 
@@ -354,44 +375,9 @@ class PlayState extends FlxState
 
 		update_view_activity_selector_highlight_rectangle();
 
-		var progress_bar_back = new FlxSprite();
-		progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
-		add(progress_bar_back);
-		progress_bar_back.x = view_generated_activities_overview_activities_label.x - progress_bar_back.width - menu_button_x_spacer;
-		progress_bar_back.y = view_generated_activities_overview_activities_label.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
-		var progress_bar_front = new FlxSprite();
-		progress_bar_front.makeGraphic(1 + Std.int(activities_completed/activities_total*progress_bar_width), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
-		add(progress_bar_front);
-		progress_bar_front.x = progress_bar_back.x;
-		progress_bar_front.y = progress_bar_back.y;
-		activity_progress_bars.add(progress_bar_back);
-		activity_progress_bars.add(progress_bar_front);
-
-		var progress_bar_back = new FlxSprite();
-		progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
-		add(progress_bar_back);
-		progress_bar_back.x = view_generated_activities_overview_time_label.x - progress_bar_back.width - menu_button_x_spacer;
-		progress_bar_back.y = view_generated_activities_overview_time_label.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
-		var progress_bar_front = new FlxSprite();
-		progress_bar_front.makeGraphic(1 + Std.int(activities_time_percentage*progress_bar_width), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
-		add(progress_bar_front);
-		progress_bar_front.x = progress_bar_back.x;
-		progress_bar_front.y = progress_bar_back.y;
-		activity_progress_bars.add(progress_bar_back);
-		activity_progress_bars.add(progress_bar_front);
-
-		var progress_bar_back = new FlxSprite();
-		progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
-		add(progress_bar_back);
-		progress_bar_back.x = view_generated_activities_overview_total_label.x - progress_bar_back.width - menu_button_x_spacer;
-		progress_bar_back.y = view_generated_activities_overview_total_label.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
-		var progress_bar_front = new FlxSprite();
-		progress_bar_front.makeGraphic(1 + Std.int(activities_percentage*progress_bar_width), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
-		add(progress_bar_front);
-		progress_bar_front.x = progress_bar_back.x;
-		progress_bar_front.y = progress_bar_back.y;
-		activity_progress_bars.add(progress_bar_back);
-		activity_progress_bars.add(progress_bar_front);
+		create_progress_bar(view_generated_activities_overview_activities_label.x - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_activities_label.y, Std.int(activities_completed/activities_total*progress_bar_width));
+		create_progress_bar(view_generated_activities_overview_time_label.x - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_time_label.y, Std.int(activities_time_percentage*progress_bar_width));
+		create_progress_bar(view_generated_activities_overview_total_label.x - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_total_label.y, Std.int(activities_percentage*progress_bar_width));
 
 		
 	}
@@ -408,6 +394,7 @@ class PlayState extends FlxState
 	}
 	public function remove_view_generated_activities_screen():Void
 	{
+		remove_total_stats_overview();
 		remove(view_generated_activities_overview_activities_label);
 		remove(view_generated_activities_overview_time_label);
 		remove(view_generated_activities_overview_total_label);
@@ -515,6 +502,46 @@ class PlayState extends FlxState
 		new_activity_create_button.y = FlxG.height - new_activity_create_button.height - 10;
 	}
 
+	public function remove_total_stats_overview():Void {
+		remove(total_stats_complete_incomplete_label);
+		remove(total_stats_completion_rate_label);
+		remove(total_stats_streak_label);
+		remove(total_stats_perfect_imperfect_label);
+	}
+
+	public function add_total_stats_overview(bottom_x:Float, bottom_y:Float):Void {
+/* 
+General Stats: 
+---------------
+TOTAL Complete: 1, Incomplete: 5
+[Xx--------]  17% Completion Rate 
+Streak: 0, Record Streak: 1
+TOTAL Perfect: 1, Imperfect: 3 
+---------------
+*/
+
+		add(total_stats_complete_incomplete_label);
+		add(total_stats_completion_rate_label);
+		add(total_stats_streak_label);
+		add(total_stats_perfect_imperfect_label);
+
+		total_stats_complete_incomplete_label.x = total_stats_completion_rate_label.x = total_stats_streak_label.x = total_stats_perfect_imperfect_label.x = bottom_x;
+
+		total_stats_perfect_imperfect_label.y = bottom_y - total_stats_perfect_imperfect_label.height;
+		total_stats_streak_label.y = total_stats_perfect_imperfect_label.y - total_stats_streak_label.height - menu_button_y;
+		total_stats_completion_rate_label.y = total_stats_streak_label.y - total_stats_completion_rate_label.height - menu_button_y;
+		total_stats_complete_incomplete_label.y = total_stats_completion_rate_label.y - total_stats_complete_incomplete_label.height - menu_button_y;
+
+		total_stats_perfect_imperfect_label.text = "TOTAL Complete: " + Std.string(activities_total_complete) + ", Incomplete: "  + Std.string(activities_total_incomplete);
+		total_stats_completion_rate_label.text = Std.string(Std.int(activities_total_complete/(activities_total_complete+activities_total_incomplete)*100)) +"% Completion Rate";
+		total_stats_streak_label.text = "Streak: " + Std.string(activities_current_streak) + ", Record Streak " + Std.string(activities_record_streak);
+		total_stats_perfect_imperfect_label.text = "TOTAL Perfect: " + Std.string(activities_perfect_days) + ", Imperfect: " + Std.string(activities_imperfect_days); 
+
+		//create_progress_bar(total_stats_completion_rate_label.x, total_stats_completion_rate_label.y, Std.int(activities_total_complete/(activities_total_complete+activities_total_incomplete)*100));
+		total_stats_completion_rate_label.x += progress_bar_width + menu_button_x_spacer;
+
+	}
+	
 	public function click_menu_generate_activities_btn():Void
 	{
 		if(generated_activities_array.length == 0){
@@ -551,6 +578,20 @@ class PlayState extends FlxState
 		add_view_generated_activities_screen();
 
 	}
+
+	public function create_progress_bar(bar_x:Float, bar_y:Float, bar_value:Int):Void {
+		var progress_bar_back = new FlxSprite();
+		progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
+		add(progress_bar_back);
+
+		var progress_bar_front = new FlxSprite();
+		progress_bar_front.makeGraphic(1 + bar_value, progress_bar_height, FlxColor.GREEN, true); 
+		add(progress_bar_front);
+		progress_bar_back.x = progress_bar_front.x = bar_x;
+		progress_bar_back.y = progress_bar_front.y = bar_y;
+		activity_progress_bars.add(progress_bar_back);
+		activity_progress_bars.add(progress_bar_front);
+	}
 	
 	public function flash_announcement_label(message:String):Void {
 		remove(announcement_label);
@@ -563,6 +604,26 @@ class PlayState extends FlxState
 		announcement_label.fadeOut(0.69);
 		add(announcement_label);
 
+	}
+
+	public function load_persistant_stats():Void {
+		total_activities_array = activity_save.data.total_activities_array;
+		activities_total_complete = activity_save.data.activities_total_complete;
+		activities_total_incomplete = activity_save.data.activities_total_incomplete;
+		activities_current_streak = activity_save.data.activities_current_streak;
+		activities_record_streak = activity_save.data.activities_record_streak;
+		activities_perfect_days = activity_save.data.activities_perfect_days;
+		activities_imperfect_days = activity_save.data.activities_imperfect_days;
+	}
+
+	public function save_persistant_stats():Void {
+		activity_save.data.total_activities_array = total_activities_array;
+		activity_save.data.activities_total_complete = activities_total_complete;
+		activity_save.data.activities_total_incomplete = activities_total_incomplete;
+		activity_save.data.activities_current_streak = activities_current_streak;
+		activity_save.data.activities_record_streak = activities_record_streak;
+		activity_save.data.activities_perfect_days = activities_perfect_days;
+		activity_save.data.activities_imperfect_days = activities_imperfect_days;
 	}
 	
 	public function remove_edit_activity_screen():Void
