@@ -332,21 +332,8 @@ class PlayState extends FlxState
 			activity_texts.add(text);
 			i ++;
 			trace( Std.string(Std.parseInt(activity[4])) + "/" +  Std.string(Std.parseInt(activity[5])));
-			var progress_bar_back = new FlxSprite();
-			progress_bar_back.makeGraphic(progress_bar_width, progress_bar_height, FlxColor.GRAY, true);
-			add(progress_bar_back);
-			progress_bar_back.x = text.x - progress_bar_back.width - menu_button_x_spacer;
-			progress_bar_back.y = text.y + (view_activity_selector_highlight_rectangle.height - progress_bar_back.height)/2;
 
-			var progress_bar_front = new FlxSprite();
-			progress_bar_front.makeGraphic(1 + Std.int(progress_bar_width*(Std.parseInt(activity[4])/Std.parseInt(activity[5]))), Std.int(progress_bar_back.height), FlxColor.GREEN, true); 
-			add(progress_bar_front);
-			progress_bar_front.x = progress_bar_back.x;
-			progress_bar_front.y = progress_bar_back.y;
-			
-
-			activity_progress_bars.add(progress_bar_back);
-			activity_progress_bars.add(progress_bar_front);
+			create_progress_bar(text.x - progress_bar_width - menu_button_x_spacer, text.y + (view_activity_selector_highlight_rectangle.height - progress_bar_height)/2, Std.int(progress_bar_width*(Std.parseInt(activity[4])/Std.parseInt(activity[5]))));
 
 		}
 		activities_time_percentage = activities_time_completed/activities_time_total;
