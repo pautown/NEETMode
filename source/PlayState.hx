@@ -47,6 +47,8 @@ class PlayState extends FlxState
 	public var view_activity_selector:Int = 0;
 	public var edit_activity_selector:Int = 0;
 
+	public var perfect_day:Bool;
+
 	var view_activity_selector_highlight_rectangle = new FlxSprite();
 	var touch_start_flx_object:flixel.FlxObject = new flixel.FlxObject(0,0,0,0);
 	var touch_start_flx_sprite:FlxSprite = new FlxSprite(0,0);
@@ -181,10 +183,12 @@ class PlayState extends FlxState
 	public function generate_generated_activities_array():Void
 	{
 		generated_activities_array = [];
+
 		for (activity in total_activities_array)
 		{
 			if(FlxG.random.int(1, 7) <= Std.parseInt(activity[6])){
-				generated_activities_array.push([activity.copy()[0],activity.copy()[1],activity.copy()[2],activity.copy()[3], "0", Std.string(FlxG.random.int(Std.parseInt(activity[4]), Std.parseInt(activity[5])))]);	
+				generated_activities_array.push([activity.copy()[0],activity.copy()[1],activity.copy()[2],activity.copy()[3], "0", Std.string(FlxG.random.int(Std.parseInt(activity[4]), Std.parseInt(activity[5]))),"false"]);	
+				activities_total_incomplete ++;
 			} 
 		}
 	}
@@ -519,12 +523,12 @@ TOTAL Perfect: 1, Imperfect: 3
 		total_stats_completion_rate_label.y = total_stats_streak_label.y - total_stats_completion_rate_label.height - menu_button_y;
 		total_stats_complete_incomplete_label.y = total_stats_completion_rate_label.y - total_stats_complete_incomplete_label.height - menu_button_y;
 
-		total_stats_perfect_imperfect_label.text = "TOTAL Complete: " + Std.string(activities_total_complete) + ", Incomplete: "  + Std.string(activities_total_incomplete);
+		total_stats_complete_incomplete_label.text = "TOTAL Complete: " + Std.string(activities_total_complete) + ", Incomplete: "  + Std.string(activities_total_incomplete);
 		total_stats_completion_rate_label.text = Std.string(Std.int(activities_total_complete/(activities_total_complete+activities_total_incomplete)*100)) +"% Completion Rate";
 		total_stats_streak_label.text = "Streak: " + Std.string(activities_current_streak) + ", Record Streak " + Std.string(activities_record_streak);
 		total_stats_perfect_imperfect_label.text = "TOTAL Perfect: " + Std.string(activities_perfect_days) + ", Imperfect: " + Std.string(activities_imperfect_days); 
 
-		//create_progress_bar(total_stats_completion_rate_label.x, total_stats_completion_rate_label.y, Std.int(activities_total_complete/(activities_total_complete+activities_total_incomplete)*100));
+		create_progress_bar(total_stats_completion_rate_label.x, total_stats_completion_rate_label.y, Std.int((activities_total_complete/(activities_total_complete+activities_total_incomplete))*progress_bar_width));
 		total_stats_completion_rate_label.x += progress_bar_width + menu_button_x_spacer;
 
 	}
@@ -535,6 +539,9 @@ TOTAL Perfect: 1, Imperfect: 3
 			add(menu_view_generated_activities_button);
 		}
 		generate_generated_activities_array();
+		perfect_day = false;
+		activities_imperfect_days ++;
+		save_persistant_stats();
 		flash_announcement_label("Daily Activities Generated");
 	}
 
@@ -560,7 +567,34 @@ TOTAL Perfect: 1, Imperfect: 3
 	public function click_view_selected_generated_activity_button():Void {
 
 		var activity = generated_activities_array[view_activity_selector];
+		var old_activity_value = activity.copy()[4];
 		activity[4] = view_selected_generated_activity_text.text;
+		if (activity[4] != old_activity_value && activity[4] == activity[5]) {
+			activities_total_incomplete --;
+			activities_total_complete++;
+			activity[7] = "true";
+			if(!perfect_day)
+			{
+				perfect_day = true;
+				for(activity in generated_activities_array) if (activity[4] != activity[5]) perfect_day = false;
+			}
+			if(perfect_day){
+				activities_perfect_days ++;
+				activities_imperfect_days --;
+			} 
+		}
+		else if (activity[7] == "true" && activity[4] != activity[5])
+		{
+			activity[7] = "false";
+			activities_total_incomplete ++;
+			activities_total_complete --;
+			if(perfect_day){
+				perfect_day == false;
+				activities_perfect_days --;
+				activities_imperfect_days ++;
+			} 
+		}
+		save_persistant_stats();
 		remove_view_generated_activities_screen();
 		add_view_generated_activities_screen();
 
