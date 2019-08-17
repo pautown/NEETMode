@@ -72,6 +72,7 @@ class PlayState extends FlxState
 	var menu_new_activity_button:FlxButton;
 	var menu_generate_activities_button:FlxButton;
 	var menu_view_generated_activities_button:FlxButton;
+	var menu_load_generated_activities_button:FlxButton;
 	var view_activities_down_button:FlxButton;
 	var view_activities_edit_button:FlxButton;
 	var view_activities_delete_button:FlxButton;
@@ -98,6 +99,7 @@ class PlayState extends FlxState
 		activity_save.bind("NEETMode");
 		total_activities_array = [];
 		if (activity_save.data.total_activities_array == null) activity_save.data.total_activities_array = []; 
+		if (activity_save.data.generated_activities_array == null) activity_save.data.generated_activities_array = []; 
 		if (activity_save.data.activities_total_complete == null) activity_save.data.activities_total_complete = 0;
 		if (activity_save.data.activities_total_incomplete == null) activity_save.data.activities_total_incomplete = 0;
 		if (activity_save.data.activities_current_streak == null) activity_save.data.activities_current_streak = 0;
@@ -115,6 +117,7 @@ class PlayState extends FlxState
 		menu_new_activity_button = new FlxButton(50, 50, "New Activity", click_menu_new_activity_btn);
 		menu_generate_activities_button = new FlxButton(50, 50, "Generate Activities", click_menu_generate_activities_btn);
 		menu_view_generated_activities_button = new FlxButton(50, 50, "View Generated", click_menu_view_generated_activities_btn);
+		menu_load_generated_activities_button = new FlxButton(50, 50, "Load Generated", click_menu_load_generated_activities_btn);
 		new_activity_create_button = new FlxButton(50, 50, "Create", click_new_activity_create_btn);
 		view_activities_edit_button = new FlxButton(50, 50, "Edit", click_view_activities_edit_btn);
 		view_activities_delete_button = new FlxButton(50, 50, "Delete", click_view_activities_delete_btn);
@@ -174,11 +177,13 @@ class PlayState extends FlxState
 		add(menu_new_activity_button);
 		add(menu_generate_activities_button);
 		//add(menu_view_generated_activities_button);
-		menu_new_activity_button.y = menu_view_activities_button.y = menu_generate_activities_button.y = menu_view_generated_activities_button.y = menu_button_y;
+		if(activity_save.data.generated_activities_array != []) add(menu_load_generated_activities_button);
+		menu_new_activity_button.y = menu_load_generated_activities_button.y = menu_view_activities_button.y = menu_generate_activities_button.y = menu_view_generated_activities_button.y = menu_button_y;
 		menu_view_activities_button.x = menu_button_x_spacer;
 		menu_new_activity_button.x = menu_view_activities_button.x + menu_view_activities_button.width + menu_button_x_spacer;
 		menu_generate_activities_button.x = menu_new_activity_button.x + menu_new_activity_button.width + menu_button_x_spacer;
 		menu_view_generated_activities_button.x = menu_generate_activities_button.x + menu_generate_activities_button.width + menu_button_x_spacer;
+		menu_load_generated_activities_button.x = menu_generate_activities_button.x + menu_generate_activities_button.width + menu_button_x_spacer;
 	}
 	public function generate_generated_activities_array():Void
 	{
@@ -535,7 +540,9 @@ TOTAL Perfect: 1, Imperfect: 3
 	
 	public function click_menu_generate_activities_btn():Void
 	{
+
 		if(generated_activities_array.length == 0){
+			remove(menu_load_generated_activities_button);
 			add(menu_view_generated_activities_button);
 		}
 		generate_generated_activities_array();
@@ -545,6 +552,17 @@ TOTAL Perfect: 1, Imperfect: 3
 		flash_announcement_label("Daily Activities Generated");
 	}
 
+	public function click_menu_load_generated_activities_btn():Void
+	{
+		generated_activities_array = activity_save.data.generated_activities_array;
+		remove(menu_load_generated_activities_button);
+		add(menu_view_generated_activities_button);
+		perfect_day = true;
+		for(activity in generated_activities_array) if (activity[4] != activity[5]) perfect_day = false;
+		save_persistant_stats();
+		flash_announcement_label("Daily Activities Loaded");
+	}
+	
 	public function click_menu_view_generated_activities_btn():Void
 	{
 		view_activity_selector = 0;
@@ -638,6 +656,7 @@ TOTAL Perfect: 1, Imperfect: 3
 	}
 
 	public function save_persistant_stats():Void {
+		activity_save.data.generated_activities_array = generated_activities_array;
 		activity_save.data.total_activities_array = total_activities_array;
 		activity_save.data.activities_total_complete = activities_total_complete;
 		activity_save.data.activities_total_incomplete = activities_total_incomplete;
