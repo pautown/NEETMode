@@ -32,12 +32,12 @@ class PlayState extends FlxState
 	public var max_label = new flixel.text.FlxText(0,0, 0, "max:", 20);
 	public var frequency_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
 
-	public var view_generated_activities_overview_activities_label = new flixel.text.FlxText(0,0, 0, "0", 20);
-	public var view_generated_activities_overview_time_label = new flixel.text.FlxText(0,0, 0, "0", 20);
-	public var view_generated_activities_overview_total_label = new flixel.text.FlxText(0,0, 0, "0", 20);
+	public var view_generated_activities_overview_activities_label = new flixel.text.FlxText(0,0, 0, "0", 10);
+	public var view_generated_activities_overview_time_label = new flixel.text.FlxText(0,0, 0, "0", 10);
+	public var view_generated_activities_overview_total_label = new flixel.text.FlxText(0,0, 0, "0", 10);
 
 	public var view_selected_generated_activity_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
-	public var view_selected_generated_activity_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 20);
+	public var view_selected_generated_activity_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 10);
 	public var view_selected_generated_activity_button:FlxButton;
 	public var view_selected_generated_activities_end_day_button:FlxButton;
 
@@ -88,10 +88,10 @@ class PlayState extends FlxState
 	var menu_button_y = 10;
 	var menu_button_x_spacer = 10;
 
-	public var total_stats_complete_incomplete_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
-	public var total_stats_completion_rate_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
-	public var total_stats_streak_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
-	public var total_stats_perfect_imperfect_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+	public var total_stats_complete_incomplete_label = new flixel.text.FlxText(0,0, 0, "frequency:", 10);
+	public var total_stats_completion_rate_label = new flixel.text.FlxText(0,0, 0, "frequency:", 10);
+	public var total_stats_streak_label = new flixel.text.FlxText(0,0, 0, "frequency:", 10);
+	public var total_stats_perfect_imperfect_label = new flixel.text.FlxText(0,0, 0, "frequency:", 10);
 
 	override public function create():Void
 	{
@@ -251,7 +251,7 @@ class PlayState extends FlxState
 		if(program_state == "view_activities") view_activities_edit_button.y = view_activities_delete_button.y = view_activity_selector_highlight_rectangle.y;
 		if(program_state == "view_generated_activities"){
 			var activity = generated_activities_array[view_activity_selector];
-			var activity_label =  activity[0] + " "+ activity[4] + "/" + activity[5] + " " + activity[3];  
+			var activity_label =  activity[0] + " " + activity[4] + "/" + activity[5] + " " + activity[3];  
 			view_selected_generated_activity_label.text = activity_label;
 			view_selected_generated_activity_text.text = activity[4];
 
@@ -301,8 +301,8 @@ class PlayState extends FlxState
 
 		view_selected_generated_activity_button.y = view_selected_generated_activities_end_day_button.y = FlxG.height - view_selected_generated_activity_button.height - menu_button_y;
 		view_selected_generated_activity_text.y = view_selected_generated_activity_button.y;
-		view_selected_generated_activity_label.y = view_selected_generated_activity_button.y - view_selected_generated_activity_label.height - 15;
-		view_selected_generated_activity_text.x = view_selected_generated_activity_label.x = menu_button_x_spacer;
+		view_selected_generated_activity_label.y = view_selected_generated_activity_button.y - view_selected_generated_activity_label.height;
+		view_selected_generated_activity_text.x = view_selected_generated_activity_label.x = 100 - progress_bar_width;
 		view_selected_generated_activity_button.x = view_selected_generated_activity_text.x + view_selected_generated_activity_text.width + menu_button_x_spacer;
 		
 		view_selected_generated_activities_end_day_button.x = FlxG.width - view_selected_generated_activities_end_day_button.width - menu_button_x_spacer;
@@ -342,7 +342,7 @@ class PlayState extends FlxState
 //			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
 			var activity_percentage = Std.string(Std.int(100*(Std.parseFloat(activity[4])/Std.parseFloat(activity[5]))));
 	 		var activity_label =  activity_percentage + "% " + Std.string(i) + " " + activity[0] + " - " + activity[1] + " - " + activity[4] + "/" + activity[5] + " " + activity[3];  
-			var text = new flixel.text.FlxText(10, menu_button_y + menu_view_activities_button.height + 15 * i, 0, Std.string(activity_label), 10);
+			var text = new flixel.text.FlxText(menu_button_x_spacer, menu_button_y + menu_view_activities_button.height + 15 * i, 0, Std.string(activity_label), 10);
 			add(text);
 			text.x += 100;
 			text.y += text.height/4;
@@ -358,16 +358,12 @@ class PlayState extends FlxState
 		activities_percentage = activities_percentage/activities_total;
 
 		add_total_stats_overview(menu_button_x_spacer, view_selected_generated_activity_label.y);
-//---------------
-// A [----------]   0% 0 / 1 Activities
-// M [----------]   0% 0 / 39 Minutes
-//---------------
-// T [----------]   0%
+
  		add(view_generated_activities_overview_activities_label);
 		add(view_generated_activities_overview_time_label);
 		add(view_generated_activities_overview_total_label);
 
-		view_generated_activities_overview_activities_label.x = view_generated_activities_overview_time_label.x = view_generated_activities_overview_total_label.x  = 100;
+		view_generated_activities_overview_activities_label.x = view_generated_activities_overview_time_label.x = view_generated_activities_overview_total_label.x  = 100 + menu_button_x_spacer;
 
 		view_generated_activities_overview_total_label.y = total_stats_complete_incomplete_label.y - view_generated_activities_overview_total_label.height - menu_button_y;
 		view_generated_activities_overview_time_label.y = view_generated_activities_overview_total_label.y - view_generated_activities_overview_time_label.height - menu_button_y;
@@ -515,27 +511,18 @@ class PlayState extends FlxState
 	}
 
 	public function add_total_stats_overview(bottom_x:Float, bottom_y:Float):Void {
-/* 
-General Stats: 
----------------
-TOTAL Complete: 1, Incomplete: 5
-[Xx--------]  17% Completion Rate 
-Streak: 0, Record Streak: 1
-TOTAL Perfect: 1, Imperfect: 3 
----------------
-*/
 
 		add(total_stats_complete_incomplete_label);
 		add(total_stats_completion_rate_label);
 		add(total_stats_streak_label);
 		add(total_stats_perfect_imperfect_label);
 
-		total_stats_complete_incomplete_label.x = total_stats_completion_rate_label.x = total_stats_streak_label.x = total_stats_perfect_imperfect_label.x = bottom_x;
+		total_stats_complete_incomplete_label.x = total_stats_completion_rate_label.x = total_stats_streak_label.x = total_stats_perfect_imperfect_label.x = 100 - progress_bar_width;
 
 		total_stats_perfect_imperfect_label.y = bottom_y - total_stats_perfect_imperfect_label.height;
-		total_stats_streak_label.y = total_stats_perfect_imperfect_label.y - total_stats_streak_label.height - menu_button_y;
-		total_stats_completion_rate_label.y = total_stats_streak_label.y - total_stats_completion_rate_label.height - menu_button_y;
-		total_stats_complete_incomplete_label.y = total_stats_completion_rate_label.y - total_stats_complete_incomplete_label.height - menu_button_y;
+		total_stats_streak_label.y = total_stats_perfect_imperfect_label.y - total_stats_streak_label.height;
+		total_stats_completion_rate_label.y = total_stats_streak_label.y - total_stats_completion_rate_label.height;
+		total_stats_complete_incomplete_label.y = total_stats_completion_rate_label.y - total_stats_complete_incomplete_label.height;
 
 		total_stats_complete_incomplete_label.text = "TOTAL Complete: " + Std.string(activities_total_complete) + ", Incomplete: "  + Std.string(activities_total_incomplete);
 		total_stats_completion_rate_label.text = Std.string(Std.int(activities_total_complete/(activities_total_complete+activities_total_incomplete)*100)) +"% Completion Rate";

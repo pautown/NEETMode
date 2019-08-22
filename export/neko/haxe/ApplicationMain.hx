@@ -32,7 +32,7 @@ class ApplicationMain
 
 		ManifestResources.init(config);
 
-		app.meta["build"] = "19";
+		app.meta["build"] = "20";
 		app.meta["company"] = "HaxeFlixel";
 		app.meta["file"] = "NEETMode";
 		app.meta["name"] = "NEETMode";
