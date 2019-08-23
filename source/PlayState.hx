@@ -32,6 +32,7 @@ class PlayState extends FlxState
 	public var max_label = new flixel.text.FlxText(0,0, 0, "max:", 20);
 	public var frequency_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
 
+	public var view_generated_activities_overview_current_label = new flixel.text.FlxText(0,0, 0, "CURRENT Activities Overview:", 10);
 	public var view_generated_activities_overview_activities_label = new flixel.text.FlxText(0,0, 0, "0", 10);
 	public var view_generated_activities_overview_time_label = new flixel.text.FlxText(0,0, 0, "0", 10);
 	public var view_generated_activities_overview_total_label = new flixel.text.FlxText(0,0, 0, "0", 10);
@@ -360,14 +361,17 @@ class PlayState extends FlxState
 		add_total_stats_overview(menu_button_x_spacer, view_selected_generated_activity_label.y);
 
  		add(view_generated_activities_overview_activities_label);
+ 		add(view_generated_activities_overview_current_label);
 		add(view_generated_activities_overview_time_label);
 		add(view_generated_activities_overview_total_label);
 
-		view_generated_activities_overview_activities_label.x = view_generated_activities_overview_time_label.x = view_generated_activities_overview_total_label.x  = 100 + menu_button_x_spacer;
+		view_generated_activities_overview_activities_label.x = view_generated_activities_overview_current_label.x = view_generated_activities_overview_time_label.x = view_generated_activities_overview_total_label.x  = view_selected_generated_activity_label.x + progress_bar_width + menu_button_x_spacer;
+		view_generated_activities_overview_current_label.x -= progress_bar_width + menu_button_x_spacer;
 
-		view_generated_activities_overview_total_label.y = total_stats_complete_incomplete_label.y - view_generated_activities_overview_total_label.height - menu_button_y;
-		view_generated_activities_overview_time_label.y = view_generated_activities_overview_total_label.y - view_generated_activities_overview_time_label.height - menu_button_y;
+		view_generated_activities_overview_total_label.y = view_selected_generated_activity_label.y - view_generated_activities_overview_total_label.height;
+		view_generated_activities_overview_time_label.y = view_generated_activities_overview_total_label.y - view_generated_activities_overview_time_label.height;
 		view_generated_activities_overview_activities_label.y = view_generated_activities_overview_time_label.y - view_generated_activities_overview_activities_label.height;
+		view_generated_activities_overview_current_label.y = view_generated_activities_overview_activities_label.y - view_generated_activities_overview_current_label.height;
 
 		view_generated_activities_overview_activities_label.text = Std.string(Std.int(activities_completed/activities_total*100)) + "% " + Std.string(activities_completed) + "/" + Std.string(activities_total) + " Activities";
 		view_generated_activities_overview_time_label.text = Std.string(Std.int(activities_time_percentage*100)) + "% " + Std.string(Std.int(activities_time_percentage*activities_time_total)) + "/" + Std.string(activities_time_total) + " Minutes";
@@ -397,6 +401,7 @@ class PlayState extends FlxState
 		remove_total_stats_overview();
 		remove(view_generated_activities_overview_activities_label);
 		remove(view_generated_activities_overview_time_label);
+		remove(view_generated_activities_overview_current_label);
 		remove(view_generated_activities_overview_total_label);
 		remove(view_activity_selector_highlight_rectangle);
 		remove(view_selected_generated_activity_label);
@@ -517,7 +522,7 @@ class PlayState extends FlxState
 		add(total_stats_streak_label);
 		add(total_stats_perfect_imperfect_label);
 
-		total_stats_complete_incomplete_label.x = total_stats_completion_rate_label.x = total_stats_streak_label.x = total_stats_perfect_imperfect_label.x = 100 - progress_bar_width;
+		total_stats_complete_incomplete_label.x = total_stats_completion_rate_label.x = total_stats_streak_label.x = total_stats_perfect_imperfect_label.x = FlxG.width/2 + menu_button_x_spacer;
 
 		total_stats_perfect_imperfect_label.y = bottom_y - total_stats_perfect_imperfect_label.height;
 		total_stats_streak_label.y = total_stats_perfect_imperfect_label.y - total_stats_streak_label.height;
@@ -586,6 +591,7 @@ class PlayState extends FlxState
 		program_state = "view_activities";
 		flash_announcement_label("View Activities");
 		if(!perfect_day) activities_current_streak = 0;
+		if(activities_record_streak < activities_current_streak) activities_record_streak++;
 		generated_activities_array = [];
 		save_persistant_stats();
 	
@@ -607,6 +613,7 @@ class PlayState extends FlxState
 			}
 			if(perfect_day){
 				activities_perfect_days ++;
+				activities_current_streak ++;
 				activities_imperfect_days --;
 			} 
 		}
@@ -618,6 +625,7 @@ class PlayState extends FlxState
 			if(perfect_day){
 				perfect_day == false;
 				activities_perfect_days --;
+				activities_current_streak --;
 				activities_imperfect_days ++;
 			} 
 		}
