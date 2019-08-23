@@ -81,6 +81,7 @@ class PlayState extends FlxState
 	var view_activities_delete_button:FlxButton;
 	var activity_texts = new FlxTypedGroup<flixel.text.FlxText>(0);
 	var activity_progress_bars = new FlxTypedGroup<flixel.FlxSprite>(0);
+	var rectangle_outlines = new FlxTypedGroup<flixel.FlxSprite>(0);
 	var activity_index_to_edit:Int;
 	public var announcement_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
 	var progress_bar_width:Int = 50;
@@ -537,6 +538,7 @@ class PlayState extends FlxState
 		create_progress_bar(total_stats_completion_rate_label.x, total_stats_completion_rate_label.y, Std.int((activities_total_complete/(activities_total_complete+activities_total_incomplete))*progress_bar_width));
 		total_stats_completion_rate_label.x += progress_bar_width + menu_button_x_spacer;
 
+		create_rectangle_outline(total_stats_complete_incomplete_label.x - 2, total_stats_complete_incomplete_label.y - 2, Std.int(FlxG.width/2.5), Std.int(Std.int(total_stats_perfect_imperfect_label.y) + total_stats_perfect_imperfect_label.height - Std.int(total_stats_complete_incomplete_label.y) + 5));
 	}
 	
 	public function click_menu_generate_activities_btn():Void
@@ -580,7 +582,6 @@ class PlayState extends FlxState
 		activity_save.flush();
 		remove_view_activities_screen();
 		add_view_activities_screen();
-		flash_announcement_label("Deleted Activity");
 	}
 
 	public function click_view_selected_generated_activities_end_day_button():Void
@@ -647,6 +648,18 @@ class PlayState extends FlxState
 		progress_bar_back.y = progress_bar_front.y = bar_y;
 		activity_progress_bars.add(progress_bar_back);
 		activity_progress_bars.add(progress_bar_front);
+	}
+
+	public function create_rectangle_outline(rect_x, rect_y, rect_width, rect_height):Void {
+		var lineStyle:LineStyle = { color: FlxColor.WHITE, thickness: 3 };
+		var rectangle_outline:FlxSprite = new FlxSprite();
+		var drawStyle:DrawStyle = { smoothing: false };
+		add(rectangle_outline);
+		rectangle_outline.makeGraphic(rect_width, rect_height, FlxColor.TRANSPARENT, true);
+		rectangle_outline.drawRoundRect(0, 0, rect_width, rect_height, 20, 20, FlxColor.TRANSPARENT, lineStyle, drawStyle);
+		rectangle_outline.x = rect_x;
+		rectangle_outline.y = rect_y;
+		rectangle_outlines.add(rectangle_outline);
 	}
 	
 	public function flash_announcement_label(message:String):Void {
