@@ -23,14 +23,14 @@ class PlayState extends FlxState
 	public var measurement_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 20);
 	public var min_text:FlxInputText = new FlxInputText(10,10,40,"min", 20);
 	public var max_text:FlxInputText = new FlxInputText(10,10,40,"max", 20);
-	public var frequency_text:FlxInputText = new FlxInputText(10,10, 40,"frequency", 20);
-	public var name_label = new flixel.text.FlxText(0,0, 0, "name:", 20);
-	public var description_label = new flixel.text.FlxText(0,0, 0, "description:", 20);
-	public var type_label = new flixel.text.FlxText(0,0, 0, "type:", 20);
-	public var measurement_label = new flixel.text.FlxText(0,0, 0, "measurement:", 20);
-	public var min_label = new flixel.text.FlxText(0,0, 0, "min:", 20);
-	public var max_label = new flixel.text.FlxText(0,0, 0, "max:", 20);
-	public var frequency_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
+	public var frequency_text:FlxInputText = new FlxInputText(10,10, 40,"Frequency", 20);
+	public var name_label = new flixel.text.FlxText(0,0, 0, "Name:", 15);
+	public var description_label = new flixel.text.FlxText(0,0, 0, "Description:", 15);
+	public var type_label = new flixel.text.FlxText(0,0, 0, "Type: ('m' for minutes, 'r' for range)", 15);
+	public var measurement_label = new flixel.text.FlxText(0,0, 0, "Measurement:", 15);
+	public var min_label = new flixel.text.FlxText(0,0, 0, "Min:", 15);
+	public var max_label = new flixel.text.FlxText(0,0, 0, "Max:", 15);
+	public var frequency_label = new flixel.text.FlxText(0,0, 0, "Avg freq (1-7):", 15);
 
 	public var view_generated_activities_overview_current_label = new flixel.text.FlxText(0,0, 0, "CURRENT Activities Overview:", 10);
 	public var view_generated_activities_overview_activities_label = new flixel.text.FlxText(0,0, 0, "0", 10);
@@ -183,7 +183,8 @@ class PlayState extends FlxState
 		add(menu_new_activity_button);
 		add(menu_generate_activities_button);
 		//add(menu_view_generated_activities_button);
-		if(activity_save.data.generated_activities_array != []) add(menu_load_generated_activities_button);
+		trace(activity_save.data.generated_activities_array);
+		if(activity_save.data.generated_activities_array.length > 0) add(menu_load_generated_activities_button);
 		menu_new_activity_button.y = menu_load_generated_activities_button.y = menu_view_activities_button.y = menu_generate_activities_button.y = menu_view_generated_activities_button.y = menu_button_y;
 		menu_view_activities_button.x = menu_button_x_spacer;
 		menu_new_activity_button.x = menu_view_activities_button.x + menu_view_activities_button.width + menu_button_x_spacer;
@@ -263,7 +264,8 @@ class PlayState extends FlxState
 	public function add_view_activities_screen():Void
 	{
 		add(view_activity_selector_highlight_rectangle);
-		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width, 20, FlxColor.BLUE, true);
+		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width - menu_button_x_spacer*2, 20, FlxColor.BLUE, true);
+		view_activity_selector_highlight_rectangle.x =menu_button_x_spacer;
 		var i = 1;
 		for (activity in total_activities_array)
 		{
@@ -323,7 +325,8 @@ class PlayState extends FlxState
 		var activities_range_percentage = 0.00;
 
 
-		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width, 18, FlxColor.BLUE, true);
+		view_activity_selector_highlight_rectangle.makeGraphic(FlxG.width - menu_button_x_spacer*2, 20, FlxColor.BLUE, true);
+		view_activity_selector_highlight_rectangle.x =menu_button_x_spacer;
 		var i = 1;
 		for (activity in generated_activities_array)
 		{
@@ -378,6 +381,10 @@ class PlayState extends FlxState
 		view_generated_activities_overview_time_label.text = Std.string(Std.int(activities_time_percentage*100)) + "% " + Std.string(Std.int(activities_time_percentage*activities_time_total)) + "/" + Std.string(activities_time_total) + " Minutes";
 		view_generated_activities_overview_total_label.text = Std.string(Std.int(activities_percentage*100)) + "%";
 
+		create_rectangle_outline(menu_button_x_spacer, menu_button_y + menu_view_generated_activities_button.height + menu_button_x_spacer, Std.int(FlxG.width - menu_button_x_spacer*2), Std.int(FlxG.height/1.7));
+
+		create_rectangle_outline(view_generated_activities_overview_current_label.x - 2, view_generated_activities_overview_current_label.y - 2, Std.int(FlxG.width/2.5), Std.int(Std.int(total_stats_perfect_imperfect_label.y) + total_stats_perfect_imperfect_label.height - Std.int(total_stats_complete_incomplete_label.y) + 5));
+
 		update_view_activity_selector_highlight_rectangle();
 
 		create_progress_bar(view_generated_activities_overview_activities_label.x - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_activities_label.y, Std.int(activities_completed/activities_total*progress_bar_width));
@@ -413,6 +420,11 @@ class PlayState extends FlxState
 		{
 			remove(text);
 			activity_texts.remove(text);
+		}
+		for (rect in rectangle_outlines)
+		{
+			remove(rect);
+			rectangle_outlines.remove(rect);
 		}
 		for (progress_bar in activity_progress_bars)
 		{
@@ -656,7 +668,7 @@ class PlayState extends FlxState
 		var drawStyle:DrawStyle = { smoothing: false };
 		add(rectangle_outline);
 		rectangle_outline.makeGraphic(rect_width, rect_height, FlxColor.TRANSPARENT, true);
-		rectangle_outline.drawRoundRect(0, 0, rect_width, rect_height, 20, 20, FlxColor.TRANSPARENT, lineStyle, drawStyle);
+		rectangle_outline.drawRect(0, 0, rect_width, rect_height, FlxColor.TRANSPARENT, lineStyle, drawStyle);
 		rectangle_outline.x = rect_x;
 		rectangle_outline.y = rect_y;
 		rectangle_outlines.add(rectangle_outline);
