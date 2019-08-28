@@ -387,9 +387,9 @@ class PlayState extends FlxState
 
 		update_view_activity_selector_highlight_rectangle();
 
-		create_progress_bar(view_generated_activities_overview_activities_label.x - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_activities_label.y, Std.int(activities_completed/activities_total*progress_bar_width));
-		create_progress_bar(view_generated_activities_overview_time_label.x - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_time_label.y, Std.int(activities_time_percentage*progress_bar_width));
-		create_progress_bar(view_generated_activities_overview_total_label.x - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_total_label.y, Std.int(activities_percentage*progress_bar_width));
+		create_progress_bar(view_generated_activities_overview_activities_label.x + 3 - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_activities_label.y + view_generated_activities_overview_activities_label.height/2 - progress_bar_height/2, Std.int(activities_completed/activities_total*progress_bar_width));
+		create_progress_bar(view_generated_activities_overview_time_label.x + 3 - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_time_label.y + view_generated_activities_overview_time_label.height/2 - progress_bar_height/2, Std.int(activities_time_percentage*progress_bar_width));
+		create_progress_bar(view_generated_activities_overview_total_label.x + 3 - progress_bar_width - menu_button_x_spacer, view_generated_activities_overview_total_label.y + view_generated_activities_overview_total_label.height/2 - progress_bar_height/2, Std.int(activities_percentage*progress_bar_width));
 
 		
 	}
@@ -547,7 +547,7 @@ class PlayState extends FlxState
 		total_stats_streak_label.text = "Streak: " + Std.string(activities_current_streak) + ", Record Streak " + Std.string(activities_record_streak);
 		total_stats_perfect_imperfect_label.text = "TOTAL Perfect: " + Std.string(activities_perfect_days) + ", Imperfect: " + Std.string(activities_imperfect_days); 
 
-		create_progress_bar(total_stats_completion_rate_label.x, total_stats_completion_rate_label.y, Std.int((activities_total_complete/(activities_total_complete+activities_total_incomplete))*progress_bar_width));
+		create_progress_bar(total_stats_completion_rate_label.x + 3, total_stats_completion_rate_label.y + total_stats_completion_rate_label.height/2 - progress_bar_height/2, Std.int((activities_total_complete/(activities_total_complete+activities_total_incomplete))*progress_bar_width));
 		total_stats_completion_rate_label.x += progress_bar_width + menu_button_x_spacer;
 
 		create_rectangle_outline(total_stats_complete_incomplete_label.x - 2, total_stats_complete_incomplete_label.y - 2, Std.int(FlxG.width/2.5), Std.int(Std.int(total_stats_perfect_imperfect_label.y) + total_stats_perfect_imperfect_label.height - Std.int(total_stats_complete_incomplete_label.y) + 5));
