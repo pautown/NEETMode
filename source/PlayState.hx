@@ -421,11 +421,6 @@ class PlayState extends FlxState
 			remove(text);
 			activity_texts.remove(text);
 		}
-		for (rect in rectangle_outlines)
-		{
-			remove(rect);
-			rectangle_outlines.remove(rect);
-		}
 		for (progress_bar in activity_progress_bars)
 		{
 			remove(progress_bar);
@@ -479,6 +474,7 @@ class PlayState extends FlxState
 		max_label.x = max_text.x = min_label.x + min_label.width + menu_button_x_spacer;
 		frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;
 		edit_activity_edit_button.y = FlxG.height - edit_activity_edit_button.height - 10;
+		create_rectangle_outline(name_label.x - menu_button_x_spacer, name_label.y - menu_button_x_spacer,  Std.int(name_text.width + menu_button_x_spacer*2),  Std.int(measurement_text.y + measurement_text.height + menu_button_x_spacer*2 - name_label.y));
 	}
 	public function add_create_new_activity_screen():Void
 	{
@@ -519,6 +515,8 @@ class PlayState extends FlxState
 		max_label.x = max_text.x = min_label.x + min_label.width + menu_button_x_spacer;
 		frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;
 		new_activity_create_button.y = FlxG.height - new_activity_create_button.height - 10;
+		create_rectangle_outline(name_label.x - menu_button_x_spacer, name_label.y - menu_button_x_spacer,  Std.int(name_text.width + menu_button_x_spacer*2),  Std.int(measurement_text.y + measurement_text.height + menu_button_x_spacer*2 - name_label.y));
+
 	}
 
 	public function remove_total_stats_overview():Void {
@@ -747,6 +745,11 @@ class PlayState extends FlxState
 	}
 
 	public function remove_current_screen():Void {
+		for (rect in rectangle_outlines)
+		{
+			remove(rect);
+			rectangle_outlines.remove(rect);
+		}
 		if(program_state == "view_activities") remove_view_activities_screen();
 		else if(program_state == "edit_activity") remove_edit_activity_screen();
 		else if(program_state == "new_activity") remove_create_new_activity_screen();
