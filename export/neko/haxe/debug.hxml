@@ -18,10 +18,12 @@
 -D lime-openal
 -D ANDROID_SETUP=true
 -D ANDROID_NDK_ROOT=/home/town/tools/
+-D FLX_NO_SOUND_SYSTEM
 -D native
 -D lime-curl
 -D openfl-native
 -D lime-harfbuzz
+-D FLX_NO_FOCUS_LOST_SCREEN
 -D tools=7.3.0
 -D ANDROID_SDK=/home/town/tools/
 -D lime-cairo
@@ -33,6 +35,8 @@
 -D FLX_NO_TOUCH
 -D lime-native
 -D lime-vorbis
+-D FLX_NO_NATIVE_CURSOR
+-D FLX_NO_SOUND_TRAY
 -D JAVA_HOME=/home/town/jre1.8.0_211/
 -D lime-cffi
 -D linux
