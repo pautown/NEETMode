@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"freq",
+				"freq_dropdown"
+			],
+			[
+				"FlxU",
+				"FlxUIDropDownMenu\tclass"
+			],
+			[
+				"name",
+				"name_label\tflixel.text.FlxText"
+			],
+			[
 				"view_",
 				"view_activity_selector_highlight_rectangle\tflixel.FlxSprite"
 			],
@@ -492,46 +504,10 @@
 	"buffers":
 	[
 		{
-			"file": "source/PlayState.hx",
+			"file": "source/Main.hx",
 			"settings":
 			{
-				"buffer_size": 36027,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/PlayState.hx",
-			"settings":
-			{
-				"buffer_size": 20359,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/town/Scripts_Python/NEETMode/NEETMode.py",
-			"settings":
-			{
-				"buffer_size": 18283,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/town/Scripts_Python/PDFS/tweepy_pdf_poster.py",
-			"settings":
-			{
-				"buffer_size": 2330,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/town/Scripts_Python/Fox_Poster/fox_poster.py",
-			"settings":
-			{
-				"buffer_size": 1312,
-				"encoding": "UTF-8",
+				"buffer_size": 193,
 				"line_ending": "Unix"
 			}
 		}
@@ -579,16 +555,19 @@
 	],
 	"file_history":
 	[
+		"/home/town/Flixel Projects/NEETMode/source/PlayState.hx",
+		"/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/PlayState.hx",
+		"/home/town/Flixel Projects/NEETMode/Project.xml",
+		"/home/town/Flixel Projects/NEETMode/source/Main.hx",
+		"/home/town/Flixel Projects/HelloWorld/HelloWorld2/Project.xml",
 		"/home/town/Scripts_Python/Fox_Poster/fox_poster.py",
+		"/home/town/Scripts_Python/PDFS/tweepy_pdf_poster.py",
+		"/home/town/Scripts_Python/NEETMode/NEETMode.py",
 		"/home/town/Scripts_Python/valid.txt",
 		"/home/town/Documents/Twitter Email Checker/5 Char Mailinator/valid.txt",
 		"/home/town/Documents/Twitter Email Checker/4 Char Mailinator/valid.txt",
-		"/home/town/Scripts_Python/PDFS/tweepy_pdf_poster.py",
-		"/home/town/Scripts_Python/NEETMode/NEETMode.py",
-		"/home/town/Flixel Projects/NEETMode/Project.xml",
 		"/home/town/Scripts_Python/Twitter_Handle_Checker.py",
 		"/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/Main.hx",
-		"/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/PlayState.hx",
 		"/home/town/Flixel Projects/HelloWorld3/source/Main.hx",
 		"/home/town/Flixel Projects/HelloWorld3/source/PlayState.hx",
 		"/home/town/Flixel Projects/HelloWorld/source/PlayState.hx",
@@ -597,7 +576,7 @@
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 26.0
 	},
 	"find_in_files":
 	{
@@ -612,6 +591,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;",
+			"\t\tnew_activity_create_button.y = FlxG.height - new_activity_create_button.height - 10;",
+			"create_rectangle_outline",
+			"create_progress_bar",
 			"zzz",
 			"fox",
 			"\"\n",
@@ -735,11 +718,7 @@
 			"'t ",
 			"\"t ",
 			"total",
-			".length",
-			".length;",
-			"update_view_activity_selector_highlight_rectangle",
-			");\n",
-			"update_view_activity_selector_highlight_rectangle"
+			".length"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -757,146 +736,30 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "source/PlayState.hx",
+					"file": "source/Main.hx",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 36027,
+						"buffer_size": 193,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								19959,
-								19959
+								0,
+								0
 							]
 						],
 						"settings":
 						{
 							"haxe-build-id": 0,
 							"syntax": "Packages/Haxe/Haxe.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 6332.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/home/town/Flixel Projects/HelloWorld/HelloWorld2/source/PlayState.hx",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 20359,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7481,
-								7481
-							]
-						],
-						"settings":
-						{
-							"haxe-build-id": 0,
-							"syntax": "Packages/Haxe/Haxe.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3145.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/home/town/Scripts_Python/NEETMode/NEETMode.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 18283,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								10281,
-								10281
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3918.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/home/town/Scripts_Python/PDFS/tweepy_pdf_poster.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2330,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								318,
-								318
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/home/town/Scripts_Python/Fox_Poster/fox_poster.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1312,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								113,
-								113
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -910,7 +773,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 38.0
+		"height": 26.0
 	},
 	"input":
 	{

@@ -95,6 +95,42 @@ class PlayState extends FlxState
 	public var total_stats_streak_label = new flixel.text.FlxText(0,0, 0, "frequency:", 10);
 	public var total_stats_perfect_imperfect_label = new flixel.text.FlxText(0,0, 0, "frequency:", 10);
 
+	public function add_activity_create_edit_labels_text():Void 
+	{
+		add(name_label);
+		add(name_text);
+		add(description_label);
+		add(description_text);
+		add(type_label);
+		add(type_text);
+		add(measurement_label);
+		add(measurement_text);
+		add(min_label);
+		add(min_text);
+		add(max_label);
+		add(max_text);
+		add(frequency_label);
+		add(frequency_text);
+		name_text.text = description_text.text = type_text.text = measurement_text.text = min_text.text = max_text.text = frequency_text.text = "";
+		name_label.y = menu_button_y + menu_view_activities_button.height + 15 + FlxG.height/2 - name_text.height*7;
+		name_text.y = name_label.y + name_label.height;
+		description_label.y = name_text.y + name_text.height + 10;
+		description_text.y = description_label.y + description_label.height;
+		type_label.y = description_text.y + description_text.height + 10;
+		type_text.y = type_label.y + type_label.height;
+		measurement_label.y = type_text.y + type_text.height + 10;
+		measurement_text.y = measurement_label.y + measurement_label.height;
+		min_label.y = max_label.y = frequency_label.y = measurement_label.y;
+		min_text.y = max_text.y = frequency_text.y = measurement_text.y;
+
+
+		name_label.x = name_text.x = FlxG.width/2 - name_text.width/2;
+		description_label.x = description_text.x = type_label.x = type_text.x = measurement_label.x = measurement_text.x = name_label.x;
+		min_label.x = min_text.x = measurement_label.x + measurement_label.width + menu_button_x_spacer;
+		max_label.x = max_text.x = min_label.x + min_label.width + menu_button_x_spacer;
+		frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;
+	}
+	
 	override public function create():Void
 	{
 		super.create();
@@ -431,24 +467,12 @@ class PlayState extends FlxState
 	{
 		edit_activity_array = total_activities_array[activity_index_to_edit].copy();
 		//			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
-		add(name_label);
-		add(name_text);
-		add(description_label);
-		add(description_text);
-		add(type_label);
-		add(type_text);
-		add(measurement_label);
-		add(measurement_text);
-		add(min_label);
-		add(min_text);
-		add(max_label);
-		add(max_text);
-		add(frequency_label);
-		add(frequency_text);
-
 		
-		add(edit_activity_edit_button);
+		add_activity_create_edit_labels_text();
 
+		add(edit_activity_edit_button);
+		edit_activity_edit_button.y = frequency_text.y;
+		edit_activity_edit_button.x = frequency_text.x + frequency_label.width + menu_button_x_spacer;
 		name_text.text = edit_activity_array[0];
 		description_text.text = edit_activity_array[1];
 		type_text.text = edit_activity_array[2];
@@ -456,65 +480,19 @@ class PlayState extends FlxState
 		min_text.text = edit_activity_array[4];
 		max_text.text = edit_activity_array[5];
 		frequency_text.text = edit_activity_array[6];
-
-		name_label.y = menu_button_y + menu_view_activities_button.height + 15;
-		name_text.y = name_label.y + name_label.height;
-		description_label.y = name_text.y + name_text.height + 10;
-		description_text.y = description_label.y + description_label.height;
-		type_label.y = description_text.y + description_text.height + 10;
-		type_text.y = type_label.y + type_label.height;
-		measurement_label.y = type_text.y + type_text.height + 10;
-		measurement_text.y = measurement_label.y + measurement_label.height;
-		min_label.y = max_label.y = frequency_label.y = measurement_label.y;
-		min_text.y = max_text.y = frequency_text.y = measurement_text.y;
-
-		name_label.x = name_text.x = 10;
-		description_label.x = description_text.x = type_label.x = type_text.x = measurement_label.x = measurement_text.x = name_label.x;
-		min_label.x = min_text.x = measurement_label.x + measurement_label.width + menu_button_x_spacer;
-		max_label.x = max_text.x = min_label.x + min_label.width + menu_button_x_spacer;
-		frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;
-		edit_activity_edit_button.y = FlxG.height - edit_activity_edit_button.height - 10;
 		create_rectangle_outline(name_label.x - menu_button_x_spacer, name_label.y - menu_button_x_spacer,  Std.int(name_text.width + menu_button_x_spacer*2),  Std.int(measurement_text.y + measurement_text.height + menu_button_x_spacer*2 - name_label.y));
 	}
+
 	public function add_create_new_activity_screen():Void
 	{
 		new_activity_array = ["???","???","???","???","???","???","???"];
 		//			["Name: ", "Description:", "Type", "Unit of Measure", "Min", "Max"];
-		add(name_label);
-		add(name_text);
-		add(description_label);
-		add(description_text);
-		add(type_label);
-		add(type_text);
-		add(measurement_label);
-		add(measurement_text);
-		add(min_label);
-		add(min_text);
-		add(max_label);
-		add(max_text);
-		add(frequency_label);
-		add(frequency_text);
+		add_activity_create_edit_labels_text();
 
-		
+
 		add(new_activity_create_button);
-		name_text.text = description_text.text = type_text.text = measurement_text.text = min_text.text = max_text.text = frequency_text.text = "";
-		name_label.y = menu_button_y + menu_view_activities_button.height + 15;
-		name_text.y = name_label.y + name_label.height;
-		description_label.y = name_text.y + name_text.height + 10;
-		description_text.y = description_label.y + description_label.height;
-		type_label.y = description_text.y + description_text.height + 10;
-		type_text.y = type_label.y + type_label.height;
-		measurement_label.y = type_text.y + type_text.height + 10;
-		measurement_text.y = measurement_label.y + measurement_label.height;
-		min_label.y = max_label.y = frequency_label.y = measurement_label.y;
-		min_text.y = max_text.y = frequency_text.y = measurement_text.y;
-
-		name_label.x = name_text.x = 10;
-		description_label.x = description_text.x = type_label.x = type_text.x = measurement_label.x = measurement_text.x = name_label.x;
-		min_label.x = min_text.x = measurement_label.x + measurement_label.width + menu_button_x_spacer;
-		max_label.x = max_text.x = min_label.x + min_label.width + menu_button_x_spacer;
-		frequency_label.x = frequency_text.x = max_label.x + max_label.width + menu_button_x_spacer;
-		new_activity_create_button.y = FlxG.height - new_activity_create_button.height - 10;
+		new_activity_create_button.y = frequency_text.y;
+		new_activity_create_button.x = frequency_text.x + frequency_label.width + menu_button_x_spacer;
 		create_rectangle_outline(name_label.x - menu_button_x_spacer, name_label.y - menu_button_x_spacer,  Std.int(name_text.width + menu_button_x_spacer*2),  Std.int(measurement_text.y + measurement_text.height + menu_button_x_spacer*2 - name_label.y));
 
 	}
