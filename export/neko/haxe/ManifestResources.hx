@@ -1,6 +1,8 @@
 package;
 
 
+import haxe.io.Bytes;
+import lime.utils.AssetBundle;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import lime.utils.Assets;
@@ -39,12 +41,8 @@ import sys.FileSystem;
 			rootPath = "assets/";
 			#elseif console
 			rootPath = lime.system.System.applicationDirectory;
-			#elseif (winrt)
-			rootPath = "./";
-			#elseif (sys && windows && !cs)
-			rootPath = FileSystem.absolutePath (haxe.io.Path.directory (#if (haxe_ver >= 3.3) Sys.programPath () #else Sys.executablePath () #end)) + "/";
 			#else
-			rootPath = "";
+			rootPath = "./";
 			#end
 
 		}
@@ -57,7 +55,7 @@ import sys.FileSystem;
 		
 		#end
 
-		var data, manifest, library;
+		var data, manifest, library, bundle;
 
 		#if kha
 

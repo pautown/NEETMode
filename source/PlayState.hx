@@ -10,8 +10,13 @@ import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.util.FlxSave;
 import flixel.tweens.FlxTween;
+import flash.Lib;
 import flixel.ui.FlxButton;
+import openfl.text.TextField;
+import openfl.text.TextFieldType;
+import openfl.text.TextFormat;
 
+import flash.display.Stage;
 using flixel.util.FlxSpriteUtil;
 
 class PlayState extends FlxState
@@ -38,7 +43,7 @@ class PlayState extends FlxState
 	public var view_generated_activities_overview_total_label = new flixel.text.FlxText(0,0, 0, "0", 10);
 
 	public var view_selected_generated_activity_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
-	public var view_selected_generated_activity_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 10);
+	public var view_selected_generated_activity_text:TextField = new TextField();
 	public var view_selected_generated_activity_button:FlxButton;
 	public var view_selected_generated_activities_end_day_button:FlxButton;
 
@@ -134,6 +139,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
+		FlxG.keys.preventDefaultKeys = [];
 		trace("hello world");
 		FlxG.mouse.useSystemCursor = true;
 		activity_save.bind("NEETMode");
@@ -334,9 +340,18 @@ class PlayState extends FlxState
 		}
 		add(view_activity_selector_highlight_rectangle);
 		add(view_selected_generated_activity_label);
-		add(view_selected_generated_activity_text);
+		FlxG.addChildBelowMouse(view_selected_generated_activity_text);
+		view_selected_generated_activity_text.embedFonts = true;
+		//inputText.defaultTextFormat = new TextFormat(fontName, textSize * oflScaleY);
+		view_selected_generated_activity_text.type = TextFieldType.INPUT;
+		view_selected_generated_activity_text.textColor = 0x000000;
+        view_selected_generated_activity_text.border = true;
+        view_selected_generated_activity_text.borderColor = 0xFFFF00;
+        view_selected_generated_activity_text.background = true;
+        view_selected_generated_activity_text.backgroundColor = 0xFFFFFF;
+        view_selected_generated_activity_text.height = view_selected_generated_activity_button.height;    
 		add(view_selected_generated_activity_button);
-
+		Lib.current.stage.focus = view_selected_generated_activity_text;
 		add(view_selected_generated_activities_end_day_button);
 
 		view_selected_generated_activity_button.y = view_selected_generated_activities_end_day_button.y = FlxG.height - view_selected_generated_activity_button.height - menu_button_y;
@@ -449,7 +464,7 @@ class PlayState extends FlxState
 		remove(view_generated_activities_overview_total_label);
 		remove(view_activity_selector_highlight_rectangle);
 		remove(view_selected_generated_activity_label);
-		remove(view_selected_generated_activity_text);
+		FlxG.removeChild(view_selected_generated_activity_text);
 		remove(view_selected_generated_activity_button);
 		remove(view_selected_generated_activities_end_day_button);
 		for (text in activity_texts)
