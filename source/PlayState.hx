@@ -22,13 +22,13 @@ using flixel.util.FlxSpriteUtil;
 class PlayState extends FlxState
 {
 
-	public var name_text:FlxInputText = new FlxInputText(10,10,Std.int(FlxG.width/1.3),"name", 20);
-	public var description_text:FlxInputText = new FlxInputText(10,10,Std.int(FlxG.width/1.3),"description", 20);
-	public var type_text:FlxInputText = new FlxInputText(10,10,Std.int(FlxG.width/1.3),"type", 20);
-	public var measurement_text:FlxInputText = new FlxInputText(10,10, 80,"measurement", 20);
-	public var min_text:FlxInputText = new FlxInputText(10,10,40,"min", 20);
-	public var max_text:FlxInputText = new FlxInputText(10,10,40,"max", 20);
-	public var frequency_text:FlxInputText = new FlxInputText(10,10, 40,"Frequency", 20);
+	public var name_text:TextField = new TextField();
+	public var description_text:TextField = new TextField();
+	public var type_text:TextField = new TextField();
+	public var measurement_text:TextField = new TextField();
+	public var min_text:TextField = new TextField();
+	public var max_text:TextField = new TextField();
+	public var frequency_text:TextField = new TextField();
 	public var name_label = new flixel.text.FlxText(0,0, 0, "Name:", 15);
 	public var description_label = new flixel.text.FlxText(0,0, 0, "Description:", 15);
 	public var type_label = new flixel.text.FlxText(0,0, 0, "Type: ('m' for minutes, 'r' for range)", 15);
@@ -102,20 +102,36 @@ class PlayState extends FlxState
 
 	public function add_activity_create_edit_labels_text():Void 
 	{
+		name_text.width = Std.int(FlxG.width/1.3);
+		description_text.width = Std.int(FlxG.width/1.3);
+		type_text.width = Std.int(FlxG.width/1.3);
+		measurement_text.width = 80;
+		min_text.width = 40;
+		max_text.width = 40;
+		frequency_text.width = 40;
+		name_text.height = description_text.height = type_text.height =
+		 measurement_text.height = min_text.height = max_text.height = frequency_text.height = name_label.height;
 		add(name_label);
-		add(name_text);
+		FlxG.addChildBelowMouse(name_text);
+		set_openfl_textfield_properties(name_text);
 		add(description_label);
-		add(description_text);
+		FlxG.addChildBelowMouse(description_text);
+		set_openfl_textfield_properties(description_text);
 		add(type_label);
-		add(type_text);
+		FlxG.addChildBelowMouse(type_text);
+		set_openfl_textfield_properties(type_text);
 		add(measurement_label);
-		add(measurement_text);
+		FlxG.addChildBelowMouse(measurement_text);
+		set_openfl_textfield_properties(measurement_text);
 		add(min_label);
-		add(min_text);
+		FlxG.addChildBelowMouse(min_text);
+		set_openfl_textfield_properties(min_text);
 		add(max_label);
-		add(max_text);
+		FlxG.addChildBelowMouse(max_text);
+		set_openfl_textfield_properties(max_text);
 		add(frequency_label);
-		add(frequency_text);
+		FlxG.addChildBelowMouse(frequency_text);
+		set_openfl_textfield_properties(frequency_text);
 		name_text.text = description_text.text = type_text.text = measurement_text.text = min_text.text = max_text.text = frequency_text.text = "";
 		name_label.y = menu_button_y + menu_view_activities_button.height + 15 + FlxG.height/2 - name_text.height*7;
 		name_text.y = name_label.y + name_label.height;
@@ -341,14 +357,8 @@ class PlayState extends FlxState
 		add(view_activity_selector_highlight_rectangle);
 		add(view_selected_generated_activity_label);
 		FlxG.addChildBelowMouse(view_selected_generated_activity_text);
-		view_selected_generated_activity_text.embedFonts = true;
-		//inputText.defaultTextFormat = new TextFormat(fontName, textSize * oflScaleY);
-		view_selected_generated_activity_text.type = TextFieldType.INPUT;
-		view_selected_generated_activity_text.textColor = 0x000000;
-        view_selected_generated_activity_text.border = true;
-        view_selected_generated_activity_text.borderColor = 0xFFFF00;
-        view_selected_generated_activity_text.background = true;
-        view_selected_generated_activity_text.backgroundColor = 0xFFFFFF;
+		set_openfl_textfield_properties(view_selected_generated_activity_text);
+		
         view_selected_generated_activity_text.height = view_selected_generated_activity_button.height;    
 		add(view_selected_generated_activity_button);
 		Lib.current.stage.focus = view_selected_generated_activity_text;
@@ -702,37 +712,37 @@ class PlayState extends FlxState
 	public function remove_edit_activity_screen():Void
 	{
 		remove(name_label);
-		remove(name_text);
+		FlxG.removeChild(name_text);
 		remove(description_label);
-		remove(description_text);
+		FlxG.removeChild(description_text);
 		remove(type_label);
-		remove(type_text);
+		FlxG.removeChild(type_text);
 		remove(measurement_label);
-		remove(measurement_text);
+		FlxG.removeChild(measurement_text);
 		remove(min_label);
-		remove(min_text);
+		FlxG.removeChild(min_text);
 		remove(max_label);
-		remove(max_text);
+		FlxG.removeChild(max_text);
 		remove(frequency_label);
-		remove(frequency_text);
+		FlxG.removeChild(frequency_text);
 		remove(edit_activity_edit_button);
 	}
 	public function remove_create_new_activity_screen():Void
 	{
 		remove(name_label);
-		remove(name_text);
+		FlxG.removeChild(name_text);
 		remove(description_label);
-		remove(description_text);
+		FlxG.removeChild(description_text);
 		remove(type_label);
-		remove(type_text);
+		FlxG.removeChild(type_text);
 		remove(measurement_label);
-		remove(measurement_text);
+		FlxG.removeChild(measurement_text);
 		remove(min_label);
-		remove(min_text);
+		FlxG.removeChild(min_text);
 		remove(max_label);
-		remove(max_text);
+		FlxG.removeChild(max_text);
 		remove(frequency_label);
-		remove(frequency_text);
+		FlxG.removeChild(frequency_text);
 		remove(new_activity_create_button);
 
 	}
@@ -747,6 +757,17 @@ class PlayState extends FlxState
 		else if(program_state == "edit_activity") remove_edit_activity_screen();
 		else if(program_state == "new_activity") remove_create_new_activity_screen();
 		else if(program_state == "view_generated_activities") remove_view_generated_activities_screen();
+	}
+
+	public function set_openfl_textfield_properties(openfl_text:TextField):Void {
+		openfl_text.embedFonts = true;
+		openfl_text.defaultTextFormat = new TextFormat(name_label.font, 15);
+		openfl_text.type = TextFieldType.INPUT;
+		openfl_text.textColor = 0x000000;
+        openfl_text.border = true;
+        openfl_text.borderColor = 0xFFFF00;
+        openfl_text.background = true;
+        openfl_text.backgroundColor = 0xFFFFFF;
 	}
 	
 }
