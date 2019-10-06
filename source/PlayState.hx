@@ -31,7 +31,7 @@ class PlayState extends FlxState
 	public var frequency_text:TextField = new TextField();
 	public var name_label = new flixel.text.FlxText(0,0, 0, "Name:", 15);
 	public var description_label = new flixel.text.FlxText(0,0, 0, "Description:", 15);
-	public var type_label = new flixel.text.FlxText(0,0, 0, "Type: ('m' for minutes, 'r' for range)", 15);
+	public var type_label = new flixel.text.FlxText(0,0, 0, "Type: ('m' for minutes or 'r' for range)", 15);
 	public var measurement_label = new flixel.text.FlxText(0,0, 0, "Measurement:", 15);
 	public var min_label = new flixel.text.FlxText(0,0, 0, "Min:", 15);
 	public var max_label = new flixel.text.FlxText(0,0, 0, "Max:", 15);
@@ -44,7 +44,7 @@ class PlayState extends FlxState
 
 	public var view_selected_generated_activity_label = new flixel.text.FlxText(0,0, 0, "frequency:", 20);
 	public var view_selected_generated_activity_text:TextField = new TextField();
-	public var view_selected_generated_activity_button:FlxButton;
+	public var view_selected_generated_activity_button_label = new flixel.text.FlxText(0,0, 0, "<ENTER> to update", 10);
 	public var view_selected_generated_activities_end_day_button:FlxButton;
 
 
@@ -126,11 +126,14 @@ class PlayState extends FlxState
 		add(min_label);
 		FlxG.addChildBelowMouse(min_text);
 		set_openfl_textfield_properties(min_text);
+		min_text.restrict = "0-9";
 		add(max_label);
 		FlxG.addChildBelowMouse(max_text);
 		set_openfl_textfield_properties(max_text);
+		max_text.restrict = "0-9";
 		add(frequency_label);
 		FlxG.addChildBelowMouse(frequency_text);
+		frequency_text.restrict = "0-7";
 		set_openfl_textfield_properties(frequency_text);
 		name_text.text = description_text.text = type_text.text = measurement_text.text = min_text.text = max_text.text = frequency_text.text = "";
 		name_label.y = menu_button_y + menu_view_activities_button.height + 15 + FlxG.height/2 - name_text.height*7;
@@ -174,7 +177,6 @@ class PlayState extends FlxState
 
 		total_activities_array = activity_save.data.total_activities_array;
 		
-		view_selected_generated_activity_button = new FlxButton(50, 50, "Update", click_view_selected_generated_activity_button);
 		view_selected_generated_activities_end_day_button = new FlxButton(50, 50, "Finish Day", click_view_selected_generated_activities_end_day_button);
 		
 		menu_view_activities_button = new FlxButton(50, 50, "View Activities", click_menu_view_activities_btn);
@@ -232,6 +234,7 @@ class PlayState extends FlxState
 				else if(view_activity_selector < 0) view_activity_selector = generated_activities_array.length - 1;
 				update_view_activity_selector_highlight_rectangle();
 			}
+			if (FlxG.keys.justPressed.ENTER) click_view_selected_generated_activity_button();
 		}
 	}
 
@@ -280,6 +283,7 @@ class PlayState extends FlxState
 	public function click_new_activity_create_btn():Void
 	{
 		trace("create");
+		if (Std.parseInt(frequency_text.text) > 7) frequency_text.text = 7; 
 		total_activities_array.push([name_text.text,description_text.text,type_text.text,
 			measurement_text.text,min_text.text,max_text.text,frequency_text.text]);
 		new_activity_array = ["???","???","???","???","???","???","???"];
@@ -314,7 +318,7 @@ class PlayState extends FlxState
 			var activity = generated_activities_array[view_activity_selector];
 			var activity_label =  activity[0] + " " + activity[4] + "/" + activity[5] + " " + activity[3];  
 			view_selected_generated_activity_label.text = activity_label;
-			view_selected_generated_activity_text.text = activity[4];
+			view_selected_generated_activity_text.text = ""; //activity[4];
 
 		}
 	}
@@ -357,18 +361,19 @@ class PlayState extends FlxState
 		add(view_activity_selector_highlight_rectangle);
 		add(view_selected_generated_activity_label);
 		FlxG.addChildBelowMouse(view_selected_generated_activity_text);
+		view_selected_generated_activity_text.restrict = "0-9";
 		set_openfl_textfield_properties(view_selected_generated_activity_text);
 		
-        view_selected_generated_activity_text.height = view_selected_generated_activity_button.height;    
-		add(view_selected_generated_activity_button);
+        view_selected_generated_activity_text.height = view_selected_generated_activity_button_label.height;    
+		add(view_selected_generated_activity_button_label);
 		Lib.current.stage.focus = view_selected_generated_activity_text;
 		add(view_selected_generated_activities_end_day_button);
 
-		view_selected_generated_activity_button.y = view_selected_generated_activities_end_day_button.y = FlxG.height - view_selected_generated_activity_button.height - menu_button_y;
-		view_selected_generated_activity_text.y = view_selected_generated_activity_button.y;
-		view_selected_generated_activity_label.y = view_selected_generated_activity_button.y - view_selected_generated_activity_label.height;
+		view_selected_generated_activity_button_label.y = view_selected_generated_activities_end_day_button.y = FlxG.height - view_selected_generated_activity_button_label.height - menu_button_y;
+		view_selected_generated_activity_text.y = view_selected_generated_activity_button_label.y;
+		view_selected_generated_activity_label.y = view_selected_generated_activity_button_label.y - view_selected_generated_activity_label.height;
 		view_selected_generated_activity_text.x = view_selected_generated_activity_label.x = 100 - progress_bar_width;
-		view_selected_generated_activity_button.x = view_selected_generated_activity_text.x + view_selected_generated_activity_text.width + menu_button_x_spacer;
+		view_selected_generated_activity_button_label.x = view_selected_generated_activity_text.x + view_selected_generated_activity_text.width + menu_button_x_spacer;
 		
 		view_selected_generated_activities_end_day_button.x = FlxG.width - view_selected_generated_activities_end_day_button.width - menu_button_x_spacer;
 
@@ -475,7 +480,7 @@ class PlayState extends FlxState
 		remove(view_activity_selector_highlight_rectangle);
 		remove(view_selected_generated_activity_label);
 		FlxG.removeChild(view_selected_generated_activity_text);
-		remove(view_selected_generated_activity_button);
+		remove(view_selected_generated_activity_button_label);
 		remove(view_selected_generated_activities_end_day_button);
 		for (text in activity_texts)
 		{
@@ -612,40 +617,43 @@ class PlayState extends FlxState
 	}
 	
 	public function click_view_selected_generated_activity_button():Void {
-
-		var activity = generated_activities_array[view_activity_selector];
-		var old_activity_value = activity.copy()[4];
-		activity[4] = view_selected_generated_activity_text.text;
-		if (activity[4] != old_activity_value && activity[4] == activity[5]) {
-			activities_total_incomplete --;
-			activities_total_complete++;
-			activity[7] = "true";
-			if(!perfect_day)
-			{
-				perfect_day = true;
-				for(activity in generated_activities_array) if (activity[4] != activity[5]) perfect_day = false;
+		if(view_selected_generated_activity_text.text != ""){
+			var activity = generated_activities_array[view_activity_selector];
+			var old_activity_value = activity.copy()[4];
+			activity[4] = view_selected_generated_activity_text.text;
+			if(Std.parseInt(activity[4]) > Std.parseInt(activity[5])) activity[4] = activity[5];
+			if (activity[4] != old_activity_value && activity[4] == activity[5]) {
+				activities_total_incomplete --;
+				activities_total_complete++;
+				activity[7] = "true";
+				if(!perfect_day)
+				{
+					perfect_day = true;
+					for(activity in generated_activities_array) if (activity[4] != activity[5]) perfect_day = false;
+				}
+				if(perfect_day){
+					activities_perfect_days ++;
+					activities_current_streak ++;
+					activities_imperfect_days --;
+				} 
 			}
-			if(perfect_day){
-				activities_perfect_days ++;
-				activities_current_streak ++;
-				activities_imperfect_days --;
-			} 
+			else if (activity[7] == "true" && activity[4] != activity[5])
+			{
+				activity[7] = "false";
+				activities_total_incomplete ++;
+				activities_total_complete --;
+				if(perfect_day){
+					perfect_day == false;
+					activities_perfect_days --;
+					activities_current_streak --;
+					activities_imperfect_days ++;
+				} 
+			}
+			save_persistant_stats();
+			remove_view_generated_activities_screen();
+			add_view_generated_activities_screen();
+			flash_announcement_label("Updated Activity");
 		}
-		else if (activity[7] == "true" && activity[4] != activity[5])
-		{
-			activity[7] = "false";
-			activities_total_incomplete ++;
-			activities_total_complete --;
-			if(perfect_day){
-				perfect_day == false;
-				activities_perfect_days --;
-				activities_current_streak --;
-				activities_imperfect_days ++;
-			} 
-		}
-		save_persistant_stats();
-		remove_view_generated_activities_screen();
-		add_view_generated_activities_screen();
 
 	}
 
@@ -761,13 +769,13 @@ class PlayState extends FlxState
 
 	public function set_openfl_textfield_properties(openfl_text:TextField):Void {
 		openfl_text.embedFonts = true;
-		openfl_text.defaultTextFormat = new TextFormat(name_label.font, 15);
+		openfl_text.defaultTextFormat = new TextFormat(name_label.font, 12);
 		openfl_text.type = TextFieldType.INPUT;
-		openfl_text.textColor = 0x000000;
+		openfl_text.textColor = 0xFFFFFF;
         openfl_text.border = true;
-        openfl_text.borderColor = 0xFFFF00;
+        openfl_text.borderColor = 0xFFFFFF;
         openfl_text.background = true;
-        openfl_text.backgroundColor = 0xFFFFFF;
+        openfl_text.backgroundColor = 0x000000;
 	}
 	
 }
