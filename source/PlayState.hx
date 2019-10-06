@@ -31,7 +31,7 @@ class PlayState extends FlxState
 	public var frequency_text:TextField = new TextField();
 	public var name_label = new flixel.text.FlxText(0,0, 0, "Name:", 15);
 	public var description_label = new flixel.text.FlxText(0,0, 0, "Description:", 15);
-	public var type_label = new flixel.text.FlxText(0,0, 0, "Type: ('m' for minutes or 'r' for range)", 15);
+	public var type_label = new flixel.text.FlxText(0,0, 0, "Type: ('t' for time or 'r' for range)", 15);
 	public var measurement_label = new flixel.text.FlxText(0,0, 0, "Measurement:", 15);
 	public var min_label = new flixel.text.FlxText(0,0, 0, "Min:", 15);
 	public var max_label = new flixel.text.FlxText(0,0, 0, "Max:", 15);
